@@ -1,5 +1,6 @@
 import {
   LOAD_PRODUCTS_FAILURE,
+  LOAD_PRODUCTS_REQUEST,
   LOAD_PRODUCTS_SUCCESS,
 } from "../action-types/productActionTypes";
 
@@ -13,6 +14,9 @@ const initialState = {
 
 const productReducer = (state = initialState, action) => {
   switch (action.type) {
+    case LOAD_PRODUCTS_REQUEST:
+      return { ...state };
+
     case LOAD_PRODUCTS_SUCCESS:
       return {
         ...state,

@@ -1,13 +1,28 @@
-import { createStore, applyMiddleware, compose } from "redux";
+import { createStore, applyMiddleware /*, compose*/ } from "redux";
 // import {createStore} from 'react-redux
-import reduxThunk from "redux-thunk";
-import reducer from "./reducers";
+// import reduxThunk from "redux-thunk";
+import createSagaMiddleware from "redux-saga";
+import logger from "redux-logger";
+import { composeWithDevTools } from "redux-devtools-extension";
+
+import reducers from "./reducers";
+import rootSaga from "./sagas";
 
 // ==============================|| REDUX - MAIN STORE ||============================== //
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const sagaMiddleware = createSagaMiddleware();
+const middlewares = [sagaMiddleware];
+
+if (process.env.NODE_ENV === "development") {
+  middlewares.push(logger);
+}
+//const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 const store = createStore(
-  reducer,
-  composeEnhancers(applyMiddleware(reduxThunk))
+  reducers,
+  // composeEnhancers(applyMiddleware(reduxThunk))
+  composeWithDevTools(applyMiddleware(...middlewares))
 );
 
-export { store };
+sagaMiddleware.run(rootSaga);
+
+export default store;
