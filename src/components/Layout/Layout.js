@@ -9,12 +9,14 @@ import BackToTop from "../BackToTop/BackToTop";
 const Layout = (props) => {
   return (
     <>
-      <Preloader />
-      <SearchBar />
-      <Header />
-      {props.children}
-      <Footer />
-      <BackToTop />
+      <div className="d-flex flex-column site-container">
+        <Preloader />
+        <SearchBar />
+        <Header />
+        {props.children}
+        <Footer />
+        <BackToTop />
+      </div>
     </>
   );
 };

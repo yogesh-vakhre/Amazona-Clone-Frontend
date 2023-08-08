@@ -3,6 +3,7 @@ import { loadProductsRequest } from "../../../store/actions/productActions";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import ProductItem from "../../../components/ProductItem/ProductItem";
+import { Container } from "react-bootstrap";
 
 const Home = () => {
   const {
@@ -18,12 +19,14 @@ const Home = () => {
   return (
     <>
       <main>
-        <h1>Features Products</h1>
-        <div className="products">
-          {products.map((product) => (
-            <ProductItem product={product} key={product.slug} />
-          ))}
-        </div>
+        <Container>
+          <h1>Features Products</h1>
+          <div className="products">
+            {products.map((product) => (
+              <ProductItem product={product} key={product.slug} />
+            ))}
+          </div>
+        </Container>
       </main>
     </>
   );
