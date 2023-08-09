@@ -19,7 +19,7 @@ const ProductItem = (props) => {
           <Rating rating={rating} numReviews={numReviews} />
           <Card.Title>{name}</Card.Title>
           <Card.Text>${price}</Card.Text>
-          <Button>Add to cart</Button>
+          <Button variant="warning">Add to cart</Button>
         </Card.Body>
       </Card>
     </>
