@@ -5,6 +5,8 @@ import { useEffect } from "react";
 import ProductItem from "../../../components/ProductItem/ProductItem";
 import { Col, Container, Row } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
+import Preloader from "../../../components/Preloader/Preloader";
+import ToastifyBox from "../../../components/ToastifyBox/ToastifyBox";
 
 const Home = () => {
   const {
@@ -16,6 +18,15 @@ const Home = () => {
     dispatch(loadProductsRequest());
   }, []);
 
+  // Show lodder
+  if (loader) {
+    return <Preloader />;
+  }
+
+  // Show Error
+  if (error && success === false) {
+    <ToastifyBox type="error" message={error} />;
+  }
   console.log("productsData", { total, products, error, loader, success });
   return (
     <>

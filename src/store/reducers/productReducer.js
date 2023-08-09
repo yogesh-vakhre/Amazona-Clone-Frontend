@@ -19,9 +19,9 @@ const initialState = {
 const productReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_PRODUCTS_REQUEST:
-      return { ...state };
+      return { ...state, loader: true };
     case LOAD_PRODUCT_BY_SLUG_REQUEST:
-      return { ...state, slug: action.payload };
+      return { ...state, slug: action.payload, loader: true };
 
     case LOAD_PRODUCTS_SUCCESS:
       return {
@@ -29,6 +29,7 @@ const productReducer = (state = initialState, action) => {
         total: action.payload.total,
         products: action.payload.products,
         success: true,
+        loader: false,
       };
 
     case LOAD_PRODUCT_BY_SLUG_SUCCESS:
@@ -36,6 +37,7 @@ const productReducer = (state = initialState, action) => {
         ...state,
         product: action.payload.product,
         success: true,
+        loader: false,
       };
 
     case LOAD_PRODUCTS_FAILURE:

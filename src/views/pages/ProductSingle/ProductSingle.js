@@ -13,7 +13,9 @@ import {
   Row,
 } from "react-bootstrap";
 import Rating from "../../../components/Rating/Rating";
+import Preloader from "../../../components/Preloader/Preloader";
 import { Helmet } from "react-helmet-async";
+import ToastifyBox from "../../../components/ToastifyBox/ToastifyBox";
 
 const ProductSingle = (props) => {
   const {
@@ -24,13 +26,25 @@ const ProductSingle = (props) => {
   useEffect(() => {
     dispatch(loadProductBySlugRequest(slug));
   }, [slug]);
+
+  // Show lodder
+  if (loader) {
+    return <Preloader />;
+  }
+
+  // Show Error
+  if (error && success === false) {
+    <ToastifyBox type="error" message={error} />;
+  }
   console.log(product);
+
   return (
     <>
       <main>
         <Helmet>
           <title>{product.name}</title>
         </Helmet>
+
         <Container className="mt-3">
           <Row>
             <Col md={6}>
