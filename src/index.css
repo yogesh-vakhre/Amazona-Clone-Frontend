@@ -25,6 +25,7 @@ main {
 }
 .btn-primary {
   background-color: #ffc000;
+  color: black;
 }
 .rating span {
   color: #ffc000;
