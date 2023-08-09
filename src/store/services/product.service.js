@@ -9,7 +9,17 @@ const getAll = async () => {
   }
 };
 
+const getBySlug = async (slug) => {
+  try {
+    const product = await productInstance.get(`/slug/${slug}`);
+    return product.data;
+  } catch (error) {
+    return console.error(error);
+  }
+};
+
 const ProductService = {
   getAll,
+  getBySlug,
 };
 export default ProductService;
