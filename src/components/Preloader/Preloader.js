@@ -1,10 +1,22 @@
 import React from "react";
-//import PropTypes from "prop-types";
+import { Spinner } from "react-bootstrap";
 
 const Preloader = (props) => {
-  return <></>;
+  return (
+    <>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      </div>
+    </>
+  );
 };
-
-//Preloader.propTypes = {};
 
 export default Preloader;
