@@ -5,6 +5,9 @@ import {
   DELETE_CART_START,
   DELETE_CART_SUCCESS,
   DELETE_CART_ERROR,
+  UPDATE_CART_START,
+  UPDATE_CART_SUCCESS,
+  UPDATE_CART_ERROR,
 } from "../action-types/cartActionTypes";
 
 export const addToCartStart = (data) => ({
@@ -34,5 +37,20 @@ export const deleteCartSucess = (data) => ({
 
 export const deleteCartError = (error) => ({
   type: DELETE_CART_ERROR,
+  payload: error,
+});
+
+export const updateCartStart = (data) => ({
+  type: UPDATE_CART_START,
+  payload: data,
+});
+
+export const updateCartSucess = (data) => ({
+  type: UPDATE_CART_SUCCESS,
+  payload: data,
+});
+
+export const updateCartError = (error) => ({
+  type: UPDATE_CART_ERROR,
   payload: error,
 });
