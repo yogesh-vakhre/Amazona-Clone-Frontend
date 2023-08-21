@@ -1,0 +1,3 @@
+export const ADD_CART_START = "ADD_CART_START";
+export const ADD_CART_SUCCESS = "ADD_CART_SUCCESS";
+export const ADD_CART_ERROR = "LOAD_PRODUCTS_ERROR";
