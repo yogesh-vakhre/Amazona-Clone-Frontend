@@ -3,10 +3,11 @@ import {
   ADD_CART_START,
   ADD_CART_SUCCESS,
 } from "../action-types/cartActionTypes";
+import CartlocalStorage from "../localStorage/cart.localStorage";
 
 const initialState = {
   cart: {
-    cartItems: [],
+    cartItems: CartlocalStorage.getCartItems() ?? [],
   },
   error: "",
   loader: false,
@@ -28,7 +29,7 @@ const cartReducer = (state = initialState, action) => {
             item._id === existItem._id ? newItem : item
           )
         : [...state.cart.cartItems, newItem];
-      localStorage.setItem("cartItems", JSON.stringify(cartItems));
+      CartlocalStorage.saveCartItem(cartItems);
       return { ...state, cart: { ...state.cart, cartItems } };
     case ADD_CART_ERROR:
       return {
