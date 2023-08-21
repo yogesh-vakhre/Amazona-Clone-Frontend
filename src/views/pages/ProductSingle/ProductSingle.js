@@ -4,7 +4,6 @@ import { loadProductBySlugRequest } from "../../../store/actions/productActions"
 import { useParams } from "react-router-dom";
 import {
   Badge,
-  Button,
   Card,
   Col,
   Container,
@@ -15,12 +14,13 @@ import {
 import Rating from "../../../components/Rating/Rating";
 import Preloader from "../../../components/Preloader/Preloader";
 import { Helmet } from "react-helmet-async";
-import ToastifyBox from "../../../components/ToastifyBox/ToastifyBox";
+import AddToCart from "../../../components/AddToCart/AddToCart";
 
 const ProductSingle = (props) => {
   const {
-    product: { product, error, loader, success },
+    product: { product, loader },
   } = useSelector((state) => state);
+
   const dispatch = useDispatch();
   const { slug } = useParams();
   useEffect(() => {
@@ -32,11 +32,7 @@ const ProductSingle = (props) => {
     return <Preloader />;
   }
 
-  // Show Error
-  if (error && success === false) {
-    <ToastifyBox type="error" message={error} />;
-  }
-  console.log(product);
+  console.log("ProductSingle", product);
 
   return (
     <>
@@ -92,13 +88,13 @@ const ProductSingle = (props) => {
                         </Col>
                       </Row>
                     </ListGroupItem>
-                    {/* {product.countInStock > 0 ?? ( */}
-                    <ListGroupItem>
-                      <div className="d-grid">
-                        <Button variant="warning"> Add to cart</Button>
-                      </div>
-                    </ListGroupItem>
-                    {/* )} */}
+                    {product.countInStock > 0 && (
+                      <ListGroupItem>
+                        <div className="d-grid">
+                          <AddToCart slug={slug} />
+                        </div>
+                      </ListGroupItem>
+                    )}
                   </ListGroup>
                 </Card.Body>
               </Card>

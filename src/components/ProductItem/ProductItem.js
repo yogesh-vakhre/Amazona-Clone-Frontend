@@ -1,7 +1,8 @@
 import React from "react";
-import { Button, Card } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Rating from "../Rating/Rating";
+import AddToCart from "../AddToCart/AddToCart";
 // import PropTypes from "prop-types";
 
 const ProductItem = (props) => {
@@ -19,7 +20,7 @@ const ProductItem = (props) => {
           <Rating rating={rating} numReviews={numReviews} />
           <Card.Title>{name}</Card.Title>
           <Card.Text>${price}</Card.Text>
-          <Button variant="warning">Add to cart</Button>
+          <AddToCart slug={slug} />
         </Card.Body>
       </Card>
     </>

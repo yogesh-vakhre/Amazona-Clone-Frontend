@@ -6,7 +6,7 @@ import ProductItem from "../../../components/ProductItem/ProductItem";
 import { Col, Container, Row } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
 import Preloader from "../../../components/Preloader/Preloader";
-import ToastifyBox from "../../../components/ToastifyBox/ToastifyBox";
+import MessageBox from "../../../components/MessageBox/MessageBox";
 
 const Home = () => {
   const {
@@ -22,30 +22,28 @@ const Home = () => {
   if (loader) {
     return <Preloader />;
   }
-
-  // Show Error
-  if (error && success === false) {
-    <ToastifyBox type="error" message={error} />;
-  }
   console.log("productsData", { total, products, error, loader, success });
   return (
     <>
       <main>
-        <Container>
+        <Container className="mt-3">
           <Helmet>
             <title>Amazona</title>
           </Helmet>
           <h1>Features Products</h1>
-
-          <div className="products">
-            <Row>
-              {products.map((product) => (
-                <Col sm={6} md={4} lg={3} className="mb-3">
-                  <ProductItem product={product} key={product.slug} />
-                </Col>
-              ))}
-            </Row>
-          </div>
+          {error && success === false ? (
+            <MessageBox variant="error">{error}</MessageBox>
+          ) : (
+            <div className="products">
+              <Row>
+                {products.map((product) => (
+                  <Col sm={6} md={4} lg={3} className="mb-3">
+                    <ProductItem product={product} key={product.slug} />
+                  </Col>
+                ))}
+              </Row>
+            </div>
+          )}
         </Container>
       </main>
     </>
