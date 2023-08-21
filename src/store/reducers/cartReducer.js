@@ -2,6 +2,9 @@ import {
   ADD_CART_ERROR,
   ADD_CART_START,
   ADD_CART_SUCCESS,
+  DELETE_CART_ERROR,
+  DELETE_CART_START,
+  DELETE_CART_SUCCESS,
 } from "../action-types/cartActionTypes";
 import CartlocalStorage from "../localStorage/cart.localStorage";
 
@@ -17,6 +20,7 @@ const initialState = {
 const cartReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_CART_START:
+    case DELETE_CART_START:
       return { ...state, slug: action.payload, loader: true };
     case ADD_CART_SUCCESS:
       // add to cart
@@ -31,7 +35,14 @@ const cartReducer = (state = initialState, action) => {
         : [...state.cart.cartItems, newItem];
       CartlocalStorage.saveCartItem(cartItems);
       return { ...state, cart: { ...state.cart, cartItems } };
+    case DELETE_CART_SUCCESS:
+      const items = state.cart.cartItems.filter(
+        (item) => item._id !== action.payload._id
+      );
+      CartlocalStorage.saveCartItem(items);
+      return { ...state, cart: { ...state.cart, cartItems: items } };
     case ADD_CART_ERROR:
+    case DELETE_CART_ERROR:
       return {
         ...state,
         error: action.payload,
