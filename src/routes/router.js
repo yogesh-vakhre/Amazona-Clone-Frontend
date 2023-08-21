@@ -4,6 +4,7 @@ import Home from "../views/pages/Home/Home";
 import Layout from "../components/Layout/Layout";
 import NotFound from "../views/pages/Page404/Page404";
 import ProductSingle from "../views/pages/ProductSingle/ProductSingle";
+import Cart from "../views/pages/Cart/Cart";
 const Router = () => {
   return useRoutes([
     {
@@ -13,6 +14,10 @@ const Router = () => {
         {
           path: "/",
           element: <Home />,
+        },
+        {
+          path: "/cart",
+          element: <Cart />,
         },
         {
           path: "/product/:slug",
