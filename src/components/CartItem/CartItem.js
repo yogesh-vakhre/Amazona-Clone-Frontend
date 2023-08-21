@@ -2,7 +2,10 @@ import React from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { deleteCartStart } from "../../store/actions/cartActions";
+import {
+  deleteCartStart,
+  updateCartStart,
+} from "../../store/actions/cartActions";
 
 const CartItem = (prop) => {
   const { product } = prop;
@@ -11,7 +14,7 @@ const CartItem = (prop) => {
   // update cart quantity item
   const updateCartHandler = async (e, product, quantity) => {
     e.preventDefault();
-    console.log(quantity);
+    dispatch(updateCartStart({ product, quantity }));
   };
 
   // delate cart item

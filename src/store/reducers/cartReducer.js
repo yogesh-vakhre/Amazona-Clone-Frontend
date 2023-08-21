@@ -5,6 +5,9 @@ import {
   DELETE_CART_ERROR,
   DELETE_CART_START,
   DELETE_CART_SUCCESS,
+  UPDATE_CART_ERROR,
+  UPDATE_CART_START,
+  UPDATE_CART_SUCCESS,
 } from "../action-types/cartActionTypes";
 import CartlocalStorage from "../localStorage/cart.localStorage";
 
@@ -20,9 +23,12 @@ const initialState = {
 const cartReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_CART_START:
+    case UPDATE_CART_START:
+      return { ...state, payload: action.payload, loader: true };
     case DELETE_CART_START:
       return { ...state, slug: action.payload, loader: true };
     case ADD_CART_SUCCESS:
+    case UPDATE_CART_SUCCESS:
       // add to cart
       const newItem = action.payload;
       const existItem = state.cart.cartItems.find(
@@ -42,6 +48,7 @@ const cartReducer = (state = initialState, action) => {
       CartlocalStorage.saveCartItem(items);
       return { ...state, cart: { ...state.cart, cartItems: items } };
     case ADD_CART_ERROR:
+    case UPDATE_CART_ERROR:
     case DELETE_CART_ERROR:
       return {
         ...state,
