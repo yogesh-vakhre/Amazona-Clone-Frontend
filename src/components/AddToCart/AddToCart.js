@@ -12,7 +12,7 @@ const AddToCart = (props) => {
   const dispatch = useDispatch();
 
   // Add to cart
-  const addToCartHandler = (e) => {
+  const addToCartHandler = async (e) => {
     e.preventDefault();
 
     // console.log("addToCartHandler", product);
