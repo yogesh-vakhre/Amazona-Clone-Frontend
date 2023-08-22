@@ -5,6 +5,7 @@ import Layout from "../components/Layout/Layout";
 import NotFound from "../views/pages/Page404/Page404";
 import ProductSingle from "../views/pages/ProductSingle/ProductSingle";
 import Cart from "../views/pages/Cart/Cart";
+import SignIn from "../views/pages/Auth/SignIn/SignIn";
 const Router = () => {
   return useRoutes([
     {
@@ -18,6 +19,10 @@ const Router = () => {
         {
           path: "/cart",
           element: <Cart />,
+        },
+        {
+          path: "/signin",
+          element: <SignIn />,
         },
         {
           path: "/product/:slug",

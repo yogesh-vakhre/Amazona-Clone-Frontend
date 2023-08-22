@@ -11,15 +11,18 @@ import {
 import { Helmet } from "react-helmet-async";
 import { useSelector } from "react-redux";
 import MessageBox from "../../../components/MessageBox/MessageBox";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CartItem from "../../../components/CartItem/CartItem";
 
 const Cart = () => {
+  const navigate = useNavigate();
   const {
     cart: { cart },
   } = useSelector((state) => state);
 
-  const checkoutHandler = (params) => {};
+  const checkoutHandler = () => {
+    navigate("/signin?redirect=/shipping");
+  };
 
   console.log("CartItems", cart);
   return (
