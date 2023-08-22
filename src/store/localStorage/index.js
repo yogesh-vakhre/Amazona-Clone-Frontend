@@ -22,3 +22,28 @@ export const deleteToken = () => {
     localStorage.removeItem("token");
   } catch (e) {}
 };
+
+export const getUserInfo = (state) => {
+  try {
+    const serializedState = localStorage.getItem("user");
+    if (serializedState === null) {
+      return undefined;
+    }
+    return JSON.parse(serializedState);
+  } catch (err) {
+    return undefined;
+  }
+};
+
+export const saveUserInfo = (state) => {
+  try {
+    const serializedState = JSON.stringify(state);
+    localStorage.setItem("user", serializedState);
+  } catch (err) {}
+};
+
+export const deleteUserInfo = () => {
+  try {
+    localStorage.removeItem("user");
+  } catch (e) {}
+};
