@@ -11,7 +11,7 @@ const Layout = (props) => {
       <div className="d-flex flex-column site-container">
         <SearchBar />
         <Header />
-        <ToastContainer />
+        <ToastContainer limit={1} />
         {props.children}
         <Footer />
         <BackToTop />
