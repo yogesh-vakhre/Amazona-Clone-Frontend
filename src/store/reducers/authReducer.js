@@ -5,6 +5,9 @@ import {
   SIGN_OUT_ERROR,
   SIGN_OUT_START,
   SIGN_OUT_SUCCESS,
+  SIGN_UP_ERROR,
+  SIGN_UP_START,
+  SIGN_UP_SUCCESS,
 } from "../action-types/authActionTypes";
 import { getUserInfo } from "../localStorage";
 
@@ -19,10 +22,12 @@ const initialState = {
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case SIGN_IN_START:
+    case SIGN_UP_START:
       return { ...state, user: action.payload, loader: true };
     case SIGN_OUT_START:
       return { ...state, loader: true };
     case SIGN_IN_SUCCESS:
+    case SIGN_UP_SUCCESS:
       return {
         ...state,
         user: action.payload.user,
@@ -40,6 +45,7 @@ const authReducer = (state = initialState, action) => {
         success: true,
       };
     case SIGN_IN_ERROR:
+    case SIGN_UP_ERROR:
     case SIGN_OUT_ERROR:
       return {
         ...state,

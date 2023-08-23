@@ -6,6 +6,7 @@ import NotFound from "../views/pages/Page404/Page404";
 import ProductSingle from "../views/pages/ProductSingle/ProductSingle";
 import Cart from "../views/pages/Cart/Cart";
 import SignIn from "../views/pages/Auth/SignIn/SignIn";
+import SignUp from "../views/pages/Auth/SignUp/SignUp";
 const Router = () => {
   return useRoutes([
     {
@@ -23,6 +24,10 @@ const Router = () => {
         {
           path: "/signin",
           element: <SignIn />,
+        },
+        {
+          path: "/signup",
+          element: <SignUp />,
         },
         {
           path: "/product/:slug",

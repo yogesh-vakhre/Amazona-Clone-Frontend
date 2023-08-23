@@ -5,6 +5,9 @@ import {
   SIGN_OUT_ERROR,
   SIGN_OUT_START,
   SIGN_OUT_SUCCESS,
+  SIGN_UP_ERROR,
+  SIGN_UP_START,
+  SIGN_UP_SUCCESS,
 } from "../action-types/authActionTypes";
 
 export const signInStart = (user) => ({
@@ -19,6 +22,21 @@ export const signInSucess = (data) => ({
 
 export const signInError = (error) => ({
   type: SIGN_IN_ERROR,
+  payload: error,
+});
+
+export const signUpStart = (user) => ({
+  type: SIGN_UP_START,
+  payload: user,
+});
+
+export const signUpSucess = (data) => ({
+  type: SIGN_UP_SUCCESS,
+  payload: data,
+});
+
+export const signUpError = (error) => ({
+  type: SIGN_UP_ERROR,
   payload: error,
 });
 
