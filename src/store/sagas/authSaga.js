@@ -3,6 +3,7 @@ import {
   SIGN_IN_START,
   SIGN_OUT_START,
   SIGN_UP_START,
+  UPDATE_PROFILE_START,
 } from "../action-types/authActionTypes";
 import {
   signInError,
@@ -11,6 +12,8 @@ import {
   signOutSucess,
   signUpError,
   signUpSucess,
+  updateProfileError,
+  updateProfileSucess,
 } from "../actions/authActions";
 import AuthService from "../services/auth.service";
 import {
@@ -61,6 +64,25 @@ function* onSignUpStartAsync({ payload }) {
   }
 }
 
+function* onUpdateProfileStartAsync({ payload }) {
+  try {
+    console.log("Call_Saga_Get_Update_Profile_Start_Payload", payload);
+    const response = yield call(AuthService.updateProfile, payload);
+    console.log("Call_Saga_Get_Update_Profile_Start", response);
+    if (response?.status === "success") {
+      const { user } = response;
+      saveUserInfo(user);
+      yield put(updateProfileSucess(response));
+      toast.success(response.message);
+    } else {
+      yield put(updateProfileError("Something Went Wrong, Please Try Again!"));
+      toast.error("Something Went Wrong, Please Try Again!");
+    }
+  } catch (error) {
+    yield put(updateProfileError(error.response));
+  }
+}
+
 function* onSignOutStartAsync({ payload }) {
   try {
     console.log("Call_Saga_Get_Sign_Out_Start");
@@ -81,6 +103,10 @@ export function* onSignUpStart() {
   yield takeLatest(SIGN_UP_START, onSignUpStartAsync);
 }
 
+export function* onUpdateProfileStart() {
+  yield takeLatest(UPDATE_PROFILE_START, onUpdateProfileStartAsync);
+}
+
 export function* onSignOutStart() {
   yield takeLatest(SIGN_OUT_START, onSignOutStartAsync);
 }
@@ -88,6 +114,7 @@ export function* onSignOutStart() {
 const authSagas = [
   fork(onSignInStart),
   fork(onSignUpStart),
+  fork(onUpdateProfileStart),
   fork(onSignOutStart),
 ];
 

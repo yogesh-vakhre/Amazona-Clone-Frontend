@@ -8,6 +8,9 @@ import {
   SIGN_UP_ERROR,
   SIGN_UP_START,
   SIGN_UP_SUCCESS,
+  UPDATE_PROFILE_ERROR,
+  UPDATE_PROFILE_START,
+  UPDATE_PROFILE_SUCCESS,
 } from "../action-types/authActionTypes";
 
 export const signInStart = (user) => ({
@@ -37,6 +40,21 @@ export const signUpSucess = (data) => ({
 
 export const signUpError = (error) => ({
   type: SIGN_UP_ERROR,
+  payload: error,
+});
+
+export const updateProfileStart = (user) => ({
+  type: UPDATE_PROFILE_START,
+  payload: user,
+});
+
+export const updateProfileSucess = (data) => ({
+  type: UPDATE_PROFILE_SUCCESS,
+  payload: data,
+});
+
+export const updateProfileError = (error) => ({
+  type: UPDATE_PROFILE_ERROR,
   payload: error,
 });
 

@@ -7,6 +7,7 @@ import ProductSingle from "../views/pages/ProductSingle/ProductSingle";
 import Cart from "../views/pages/Cart/Cart";
 import SignIn from "../views/pages/Auth/SignIn/SignIn";
 import SignUp from "../views/pages/Auth/SignUp/SignUp";
+import Profile from "../views/pages/Auth/Profile/Profile";
 const Router = () => {
   return useRoutes([
     {
@@ -28,6 +29,10 @@ const Router = () => {
         {
           path: "/signup",
           element: <SignUp />,
+        },
+        {
+          path: "/profile",
+          element: <Profile />,
         },
         {
           path: "/product/:slug",
