@@ -11,6 +11,7 @@ import Profile from "../views/pages/Auth/Profile/Profile";
 import ShippingAddress from "../views/pages/ShippingAddress/ShippingAddress";
 import PaymentMethod from "../views/pages/PaymentMethod/PaymentMethod";
 import PlaceOrder from "../views/pages/PlaceOrder/PlaceOrder";
+import Order from "../views/pages/Order/Order";
 
 const Router = () => {
   return useRoutes([
@@ -49,6 +50,10 @@ const Router = () => {
         {
           path: "/placeorder",
           element: <PlaceOrder />,
+        },
+        {
+          path: "/order/:orderId",
+          element: <Order />,
         },
         {
           path: "/product/:slug",
