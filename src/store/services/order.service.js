@@ -9,7 +9,17 @@ const create = async (data) => {
   }
 };
 
+const findById = async (orderId) => {
+  try {
+    const order = await orderInstance.get(`/${orderId}`);
+    return order.data;
+  } catch (error) {
+    return console.error(error);
+  }
+};
+
 const OrderService = {
   create,
+  findById,
 };
 export default OrderService;
