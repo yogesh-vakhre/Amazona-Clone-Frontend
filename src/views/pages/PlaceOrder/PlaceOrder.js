@@ -6,13 +6,15 @@ import { Link, useNavigate } from "react-router-dom";
 
 import Preloader from "../../../components/Preloader/Preloader";
 import CheckoutSteps from "../../../components/CheckoutSteps/CheckoutSteps";
+import { addOrderStart } from "../../../store/actions/orderActions";
 
 const PlaceOrder = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { isSignedIn = false } = useSelector((state) => state.auth);
-  const { loader, cart } = useSelector((state) => state.cart);
+  const { cart } = useSelector((state) => state.cart);
+  const { loader, order } = useSelector((state) => state.order);
 
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100; // 123.2345 => 123.23
   cart.itemsPrice = round2(
@@ -31,12 +33,26 @@ const PlaceOrder = () => {
     }
   }, [navigate, cart, isSignedIn]);
 
-  const placeOrderHandler = (params) => {};
+  const placeOrderHandler = async (e) => {
+    e.preventDefault();
+    const data = {
+      orderItems: cart.cartItems,
+      shippingAddress: cart.shippingAddress,
+      paymentMethod: cart.paymentMethod,
+      itemsPrice: cart.itemsPrice,
+      shippingPrice: cart.shippingPrice,
+      taxPrice: cart.taxPrice,
+      totalPrice: cart.totalPrice,
+    };
 
-  // // Show lodder
-  // if (loader) {
-  //   return <Preloader />;
-  // }
+    dispatch(addOrderStart(data));
+    navigate(`/order/${order._id}`);
+  };
+
+  // Show lodder
+  if (loader) {
+    return <Preloader />;
+  }
   return (
     <>
       <main>
@@ -141,13 +157,12 @@ const PlaceOrder = () => {
                         <div className="d-grid">
                           <Button
                             type="button"
-                            onClick={placeOrderHandler}
+                            onClick={(e) => placeOrderHandler(e)}
                             disabled={cart?.cartItems.length === 0}
                           >
                             Place Order
                           </Button>
                         </div>
-                        {loader && <Preloader />}
                       </ListGroup.Item>
                     </ListGroup>
                   </Card.Body>
