@@ -14,6 +14,7 @@ import {
   ADD_PAYMENT_METHOD_START,
   ADD_PAYMENT_METHOD_SUCCESS,
   ADD_PAYMENT_METHOD_ERROR,
+  CART_CLEAR,
 } from "../action-types/cartActionTypes";
 
 export const addToCartStart = (data) => ({
@@ -89,4 +90,8 @@ export const updateCartSucess = (data) => ({
 export const updateCartError = (error) => ({
   type: UPDATE_CART_ERROR,
   payload: error,
+});
+
+export const cartClear = () => ({
+  type: CART_CLEAR,
 });
