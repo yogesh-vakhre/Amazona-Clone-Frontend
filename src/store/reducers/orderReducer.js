@@ -5,6 +5,9 @@ import {
   DELIVER_ORDER_BY_ID_ERROR,
   DELIVER_ORDER_BY_ID_START,
   DELIVER_ORDER_BY_ID_SUCCESS,
+  LOAD_ORDERS_ERROR,
+  LOAD_ORDERS_START,
+  LOAD_ORDERS_SUCCESS,
   LOAD_ORDER_BY_ID_ERROR,
   LOAD_ORDER_BY_ID_START,
   LOAD_ORDER_BY_ID_SUCCESS,
@@ -15,6 +18,7 @@ import {
 
 const initialState = {
   order: {},
+  orders: [],
   error: "",
   success: false,
   loader: false,
@@ -22,12 +26,22 @@ const initialState = {
 
 const orderReducer = (state = initialState, action) => {
   switch (action.type) {
+    case LOAD_ORDERS_START:
+      return { ...state, loader: true };
+
     case ADD_ORDER_START:
     case LOAD_ORDER_BY_ID_START:
     case PAY_ORDER_BY_ID_START:
     case DELIVER_ORDER_BY_ID_START:
       return { ...state, order: action.payload, loader: true };
 
+    case LOAD_ORDERS_SUCCESS:
+      return {
+        ...state,
+        orders: action.payload.orders,
+        success: true,
+        loader: false,
+      };
     case ADD_ORDER_SUCCESS:
     case LOAD_ORDER_BY_ID_SUCCESS:
     case PAY_ORDER_BY_ID_SUCCESS:
@@ -43,6 +57,7 @@ const orderReducer = (state = initialState, action) => {
     case LOAD_ORDER_BY_ID_ERROR:
     case PAY_ORDER_BY_ID_ERROR:
     case DELIVER_ORDER_BY_ID_ERROR:
+    case LOAD_ORDERS_ERROR:
       return {
         ...state,
         error: action.payload,
