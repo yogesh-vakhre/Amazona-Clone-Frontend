@@ -6,11 +6,14 @@ import {
   addOrderSucess,
   loadOrderByIdError,
   loadOrderByIdSucess,
+  payOrderByIdError,
+  payOrderByIdSucess,
 } from "../actions/orderActions";
 import OrderService from "../services/order.service";
 import {
   ADD_ORDER_START,
   LOAD_ORDER_BY_ID_START,
+  PAY_ORDER_BY_ID_START,
 } from "../action-types/orderActionTypes";
 
 function* onAddOrderStartAsync({ payload }) {
@@ -44,7 +47,25 @@ function* onLoadOrderByIdStartAsync({ payload }) {
       toast.error("Something Went Wrong, Please Try Again!");
     }
   } catch (error) {
-    yield put(addOrderError(error.response));
+    yield put(loadOrderByIdError(error.response));
+  }
+}
+
+function* onPayOrderByIdStartAsync({ payload }) {
+  try {
+    console.log("Call_Saga_Pay_Order_BY_ID_Start_Payload", payload);
+    const response = yield call(OrderService.payOrderById, payload);
+    console.log("Call_Saga_Pay_Order_BY_ID_Start_Response", response);
+
+    if (response?.status === "success") {
+      yield put(payOrderByIdSucess(response));
+      toast.success("Order is paid");
+    } else {
+      yield put(payOrderByIdError("Something Went Wrong, Please Try Again!"));
+      toast.error("Something Went Wrong, Please Try Again!");
+    }
+  } catch (error) {
+    yield put(payOrderByIdError(error.response));
   }
 }
 
@@ -56,7 +77,15 @@ export function* onLoadOrderByIdStart() {
   yield takeLatest(LOAD_ORDER_BY_ID_START, onLoadOrderByIdStartAsync);
 }
 
-const orderSagas = [fork(onAddOrderStart), fork(onLoadOrderByIdStart)];
+export function* onPayOrderByIdStart() {
+  yield takeLatest(PAY_ORDER_BY_ID_START, onPayOrderByIdStartAsync);
+}
+
+const orderSagas = [
+  fork(onAddOrderStart),
+  fork(onLoadOrderByIdStart),
+  fork(onPayOrderByIdStart),
+];
 
 export default function* orderSaga() {
   yield all([...orderSagas]);

@@ -5,6 +5,9 @@ import {
   LOAD_ORDER_BY_ID_ERROR,
   LOAD_ORDER_BY_ID_START,
   LOAD_ORDER_BY_ID_SUCCESS,
+  PAY_ORDER_BY_ID_ERROR,
+  PAY_ORDER_BY_ID_START,
+  PAY_ORDER_BY_ID_SUCCESS,
 } from "../action-types/orderActionTypes";
 
 const initialState = {
@@ -18,10 +21,12 @@ const orderReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_ORDER_START:
     case LOAD_ORDER_BY_ID_START:
+    case PAY_ORDER_BY_ID_START:
       return { ...state, order: action.payload, loader: true };
 
     case ADD_ORDER_SUCCESS:
     case LOAD_ORDER_BY_ID_SUCCESS:
+    case PAY_ORDER_BY_ID_SUCCESS:
       return {
         ...state,
         order: action.payload.order,
@@ -31,6 +36,7 @@ const orderReducer = (state = initialState, action) => {
 
     case ADD_ORDER_ERROR:
     case LOAD_ORDER_BY_ID_ERROR:
+    case PAY_ORDER_BY_ID_ERROR:
       return {
         ...state,
         error: action.payload,

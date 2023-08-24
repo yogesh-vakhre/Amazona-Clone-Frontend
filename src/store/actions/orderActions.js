@@ -5,6 +5,9 @@ import {
   LOAD_ORDER_BY_ID_ERROR,
   LOAD_ORDER_BY_ID_START,
   LOAD_ORDER_BY_ID_SUCCESS,
+  PAY_ORDER_BY_ID_ERROR,
+  PAY_ORDER_BY_ID_START,
+  PAY_ORDER_BY_ID_SUCCESS,
 } from "../action-types/orderActionTypes";
 
 export const addOrderStart = (order) => ({
@@ -22,9 +25,9 @@ export const addOrderError = (error) => ({
   payload: error,
 });
 
-export const loadOrderByIdStart = (orderID) => ({
+export const loadOrderByIdStart = (orderId) => ({
   type: LOAD_ORDER_BY_ID_START,
-  payload: orderID,
+  payload: orderId,
 });
 
 export const loadOrderByIdSucess = (data) => ({
@@ -34,5 +37,20 @@ export const loadOrderByIdSucess = (data) => ({
 
 export const loadOrderByIdError = (error) => ({
   type: LOAD_ORDER_BY_ID_ERROR,
+  payload: error,
+});
+
+export const payOrderByIdStart = (orderId) => ({
+  type: PAY_ORDER_BY_ID_START,
+  payload: orderId,
+});
+
+export const payOrderByIdSucess = (data) => ({
+  type: PAY_ORDER_BY_ID_SUCCESS,
+  payload: data,
+});
+
+export const payOrderByIdError = (error) => ({
+  type: PAY_ORDER_BY_ID_ERROR,
   payload: error,
 });
