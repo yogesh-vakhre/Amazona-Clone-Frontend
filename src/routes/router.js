@@ -8,6 +8,10 @@ import Cart from "../views/pages/Cart/Cart";
 import SignIn from "../views/pages/Auth/SignIn/SignIn";
 import SignUp from "../views/pages/Auth/SignUp/SignUp";
 import Profile from "../views/pages/Auth/Profile/Profile";
+import ShippingAddress from "../views/pages/ShippingAddress/ShippingAddress";
+import PaymentMethod from "../views/pages/PaymentMethod/PaymentMethod";
+import PlaceOrder from "../views/pages/PlaceOrder/PlaceOrder";
+
 const Router = () => {
   return useRoutes([
     {
@@ -33,6 +37,18 @@ const Router = () => {
         {
           path: "/profile",
           element: <Profile />,
+        },
+        {
+          path: "/payment",
+          element: <PaymentMethod />,
+        },
+        {
+          path: "/shipping",
+          element: <ShippingAddress />,
+        },
+        {
+          path: "/placeorder",
+          element: <PlaceOrder />,
         },
         {
           path: "/product/:slug",

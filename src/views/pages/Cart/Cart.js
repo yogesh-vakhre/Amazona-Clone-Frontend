@@ -19,9 +19,14 @@ const Cart = () => {
   const {
     cart: { cart },
   } = useSelector((state) => state);
+  const { isSignedIn = false } = useSelector((state) => state.auth);
 
   const checkoutHandler = () => {
-    navigate("/signin?redirect=/shipping");
+    if (!isSignedIn) {
+      navigate("/signin?redirect=/shipping");
+    } else {
+      navigate("/shipping");
+    }
   };
 
   console.log("CartItems", cart);
