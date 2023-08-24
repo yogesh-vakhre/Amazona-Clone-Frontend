@@ -14,6 +14,7 @@ import {
   ADD_PAYMENT_METHOD_START,
   ADD_PAYMENT_METHOD_SUCCESS,
   ADD_PAYMENT_METHOD_ERROR,
+  CART_CLEAR,
 } from "../action-types/cartActionTypes";
 
 import CartlocalStorage from "../localStorage/cart.localStorage";
@@ -60,6 +61,14 @@ const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         cart: { ...state.cart, cartItems: items },
+        success: true,
+        loader: false,
+      };
+    case CART_CLEAR:
+      CartlocalStorage.deleteCartItems();
+      return {
+        ...state,
+        cart: { ...state.cart, cartItems: [] },
         success: true,
         loader: false,
       };

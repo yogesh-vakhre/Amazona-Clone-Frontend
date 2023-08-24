@@ -17,24 +17,18 @@ const Order = () => {
   const params = useParams();
   const { orderId } = params;
   const { user, isSignedIn = false } = useSelector((state) => state.auth);
-  const { cart } = useSelector((state) => state.cart);
   const { loader, order } = useSelector((state) => state.order);
-
-  const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100; // 123.2345 => 123.23
-  cart.itemsPrice = round2(
-    cart.cartItems.reduce((a, c) => a + c.quantity * c.price, 0)
-  );
-  cart.shippingPrice = cart.itemsPrice > 100 ? round2(0) : round2(10);
-  cart.taxPrice = round2(0.15 * cart.itemsPrice);
-  cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
-
+  console.log(order);
   useEffect(() => {
     // Check user login
     if (!isSignedIn) {
       navigate("/signin?redirect=/shipping");
     }
-    dispatch(loadOrderByIdStart(orderId));
-  }, [navigate, cart, isSignedIn]);
+    const fetchOrder = async () => {
+      dispatch(loadOrderByIdStart(orderId));
+    };
+    fetchOrder();
+  }, [navigate, orderId, isSignedIn]);
 
   const payOrderHandler = (e) => {
     e.preventDefault();
@@ -66,16 +60,17 @@ const Order = () => {
                   <Card.Body>
                     <Card.Title>Shipping</Card.Title>
                     <Card.Text>
-                      <strong>Name:</strong> {cart.shippingAddress.fullName}{" "}
+                      <strong>Name:</strong> {order?.shippingAddress?.fullName}{" "}
                       <br />
-                      <strong>Address: </strong> {cart.shippingAddress.address},
-                      {cart.shippingAddress.city},{" "}
-                      {cart.shippingAddress.postalCode},
-                      {cart.shippingAddress.country}
+                      <strong>Address: </strong>{" "}
+                      {order?.shippingAddress?.address},
+                      {order?.shippingAddress?.city},{" "}
+                      {order?.shippingAddress?.postalCode},
+                      {order?.shippingAddress?.country}
                     </Card.Text>
-                    {order.isDelivered ? (
+                    {order?.isDelivered ? (
                       <MessageBox variant="success">
-                        Delivered at {order.deliveredAt}
+                        Delivered at {order?.deliveredAt}
                       </MessageBox>
                     ) : (
                       <MessageBox variant="danger">Not Delivered</MessageBox>
@@ -87,11 +82,11 @@ const Order = () => {
                   <Card.Body>
                     <Card.Title>Payment</Card.Title>
                     <Card.Text>
-                      <strong>Method:</strong> {cart.paymentMethod}
+                      <strong>Method:</strong> {order?.paymentMethod}
                     </Card.Text>
-                    {order.isPaid ? (
+                    {order?.isPaid ? (
                       <MessageBox variant="success">
-                        Paid at {order.paidAt}
+                        Paid at {order?.paidAt}
                       </MessageBox>
                     ) : (
                       <MessageBox variant="danger">Not Paid</MessageBox>
@@ -103,24 +98,24 @@ const Order = () => {
                   <Card.Body>
                     <Card.Title>Items</Card.Title>
                     <ListGroup variant="flush">
-                      {cart.cartItems.map((item) => (
-                        <ListGroup.Item key={item._id}>
+                      {order?.orderItems?.map((item) => (
+                        <ListGroup.Item key={item?._id}>
                           <Row className="align-items-center">
                             <Col md={6}>
                               <img
                                 width={70}
-                                src={item.image}
-                                alt={item.name}
+                                src={item?.image}
+                                alt={item?.name}
                                 className="img-fluid rounded img-thumbnail"
                               ></img>{" "}
-                              <Link to={`/product/${item.slug}`}>
+                              <Link to={`/product/${item?.slug}`}>
                                 {item.name}
                               </Link>
                             </Col>
                             <Col md={3}>
-                              <span>{item.quantity}</span>
+                              <span>{item?.quantity}</span>
                             </Col>
-                            <Col md={3}>${item.price}</Col>
+                            <Col md={3}>${item?.price}</Col>
                           </Row>
                         </ListGroup.Item>
                       ))}
@@ -136,19 +131,19 @@ const Order = () => {
                       <ListGroup.Item>
                         <Row>
                           <Col>Items</Col>
-                          <Col>${cart?.itemsPrice?.toFixed(2)}</Col>
+                          <Col>${order?.itemsPrice?.toFixed(2)}</Col>
                         </Row>
                       </ListGroup.Item>
                       <ListGroup.Item>
                         <Row>
                           <Col>Shipping</Col>
-                          <Col>${cart?.shippingPrice?.toFixed(2)}</Col>
+                          <Col>${order?.shippingPrice?.toFixed(2)}</Col>
                         </Row>
                       </ListGroup.Item>
                       <ListGroup.Item>
                         <Row>
                           <Col>Tax</Col>
-                          <Col>${cart?.taxPrice?.toFixed(2)}</Col>
+                          <Col>${order?.taxPrice?.toFixed(2)}</Col>
                         </Row>
                       </ListGroup.Item>
                       <ListGroup.Item>
@@ -157,7 +152,7 @@ const Order = () => {
                             <strong> Order Total</strong>
                           </Col>
                           <Col>
-                            <strong>${cart?.totalPrice?.toFixed(2)}</strong>
+                            <strong>${order?.totalPrice?.toFixed(2)}</strong>
                           </Col>
                         </Row>
                       </ListGroup.Item>
@@ -167,7 +162,7 @@ const Order = () => {
                             <Button
                               type="button"
                               onClick={(e) => payOrderHandler(e)}
-                              disabled={cart?.cartItems.length === 0}
+                              disabled={order?.orderItems?.length === 0}
                             >
                               Pay Order
                             </Button>
@@ -182,7 +177,7 @@ const Order = () => {
                               <Button
                                 type="button"
                                 onClick={(e) => deliverOrderHandler(e)}
-                                disabled={cart?.cartItems.length === 0}
+                                disabled={order?.orderItems?.length === 0}
                               >
                                 Deliver Order
                               </Button>

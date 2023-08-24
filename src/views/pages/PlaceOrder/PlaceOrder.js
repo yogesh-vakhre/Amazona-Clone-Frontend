@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Preloader from "../../../components/Preloader/Preloader";
 import CheckoutSteps from "../../../components/CheckoutSteps/CheckoutSteps";
 import { addOrderStart } from "../../../store/actions/orderActions";
+import { cartClear } from "../../../store/actions/cartActions";
 
 const PlaceOrder = () => {
   const navigate = useNavigate();
@@ -46,9 +47,10 @@ const PlaceOrder = () => {
     };
 
     dispatch(addOrderStart(data));
+    dispatch(cartClear());
     navigate(`/order/${order._id}`);
   };
-
+  console.log(order);
   // Show lodder
   if (loader) {
     return <Preloader />;
