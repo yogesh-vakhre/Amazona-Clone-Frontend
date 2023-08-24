@@ -8,6 +8,8 @@ import {
   deliverOrderByIdSucess,
   loadOrderByIdError,
   loadOrderByIdSucess,
+  loadOrdersError,
+  loadOrdersSucess,
   payOrderByIdError,
   payOrderByIdSucess,
 } from "../actions/orderActions";
@@ -15,9 +17,26 @@ import OrderService from "../services/order.service";
 import {
   ADD_ORDER_START,
   DELIVER_ORDER_BY_ID_START,
+  LOAD_ORDERS_START,
   LOAD_ORDER_BY_ID_START,
   PAY_ORDER_BY_ID_START,
 } from "../action-types/orderActionTypes";
+
+function* onLoadOrdersStartAsync() {
+  try {
+    const response = yield call(OrderService.getOrders);
+    console.log("Call_Saga_Orders_Start_Response", response);
+
+    if (response?.status === "success") {
+      yield put(loadOrdersSucess(response));
+    } else {
+      yield put(loadOrdersError("Something Went Wrong, Please Try Again!"));
+      toast.error("Something Went Wrong, Please Try Again!");
+    }
+  } catch (error) {
+    yield put(loadOrdersError(error.response));
+  }
+}
 
 function* onAddOrderStartAsync({ payload }) {
   try {
@@ -92,6 +111,10 @@ function* onDeliverOrderByIdStartAsync({ payload }) {
   }
 }
 
+export function* onLoadOrdersStart() {
+  yield takeLatest(LOAD_ORDERS_START, onLoadOrdersStartAsync);
+}
+
 export function* onAddOrderStart() {
   yield takeLatest(ADD_ORDER_START, onAddOrderStartAsync);
 }
@@ -109,6 +132,7 @@ export function* onDeliverOrderByIdStart() {
 }
 
 const orderSagas = [
+  fork(onLoadOrdersStart),
   fork(onAddOrderStart),
   fork(onLoadOrderByIdStart),
   fork(onPayOrderByIdStart),

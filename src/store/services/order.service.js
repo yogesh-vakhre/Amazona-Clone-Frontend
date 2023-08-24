@@ -1,5 +1,14 @@
 import orderInstance from "../axios/orderInstance";
 
+const getOrders = async () => {
+  try {
+    const order = await orderInstance.get(`/mine`);
+    return order.data;
+  } catch (error) {
+    return console.error(error);
+  }
+};
+
 const create = async (data) => {
   try {
     const order = await orderInstance.post(`/`, data);
@@ -37,6 +46,7 @@ const deliverOrderById = async (orderId) => {
 };
 
 const OrderService = {
+  getOrders,
   create,
   findById,
   payOrderById,
