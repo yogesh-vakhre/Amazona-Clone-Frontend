@@ -27,9 +27,19 @@ const payOrderById = async (orderId) => {
   }
 };
 
+const deliverOrderById = async (orderId) => {
+  try {
+    const order = await orderInstance.put(`/${orderId}/deliver`);
+    return order.data;
+  } catch (error) {
+    return console.error(error);
+  }
+};
+
 const OrderService = {
   create,
   findById,
   payOrderById,
+  deliverOrderById,
 };
 export default OrderService;

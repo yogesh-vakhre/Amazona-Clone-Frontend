@@ -2,6 +2,9 @@ import {
   ADD_ORDER_ERROR,
   ADD_ORDER_START,
   ADD_ORDER_SUCCESS,
+  DELIVER_ORDER_BY_ID_ERROR,
+  DELIVER_ORDER_BY_ID_START,
+  DELIVER_ORDER_BY_ID_SUCCESS,
   LOAD_ORDER_BY_ID_ERROR,
   LOAD_ORDER_BY_ID_START,
   LOAD_ORDER_BY_ID_SUCCESS,
@@ -52,5 +55,20 @@ export const payOrderByIdSucess = (data) => ({
 
 export const payOrderByIdError = (error) => ({
   type: PAY_ORDER_BY_ID_ERROR,
+  payload: error,
+});
+
+export const deliverOrderByIdStart = (orderId) => ({
+  type: DELIVER_ORDER_BY_ID_START,
+  payload: orderId,
+});
+
+export const deliverOrderByIdSucess = (data) => ({
+  type: DELIVER_ORDER_BY_ID_SUCCESS,
+  payload: data,
+});
+
+export const deliverOrderByIdError = (error) => ({
+  type: DELIVER_ORDER_BY_ID_ERROR,
   payload: error,
 });

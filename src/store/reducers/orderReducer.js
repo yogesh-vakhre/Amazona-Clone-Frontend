@@ -2,6 +2,9 @@ import {
   ADD_ORDER_ERROR,
   ADD_ORDER_START,
   ADD_ORDER_SUCCESS,
+  DELIVER_ORDER_BY_ID_ERROR,
+  DELIVER_ORDER_BY_ID_START,
+  DELIVER_ORDER_BY_ID_SUCCESS,
   LOAD_ORDER_BY_ID_ERROR,
   LOAD_ORDER_BY_ID_START,
   LOAD_ORDER_BY_ID_SUCCESS,
@@ -22,11 +25,13 @@ const orderReducer = (state = initialState, action) => {
     case ADD_ORDER_START:
     case LOAD_ORDER_BY_ID_START:
     case PAY_ORDER_BY_ID_START:
+    case DELIVER_ORDER_BY_ID_START:
       return { ...state, order: action.payload, loader: true };
 
     case ADD_ORDER_SUCCESS:
     case LOAD_ORDER_BY_ID_SUCCESS:
     case PAY_ORDER_BY_ID_SUCCESS:
+    case DELIVER_ORDER_BY_ID_SUCCESS:
       return {
         ...state,
         order: action.payload.order,
@@ -37,6 +42,7 @@ const orderReducer = (state = initialState, action) => {
     case ADD_ORDER_ERROR:
     case LOAD_ORDER_BY_ID_ERROR:
     case PAY_ORDER_BY_ID_ERROR:
+    case DELIVER_ORDER_BY_ID_ERROR:
       return {
         ...state,
         error: action.payload,

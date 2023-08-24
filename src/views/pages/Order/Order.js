@@ -6,6 +6,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import Preloader from "../../../components/Preloader/Preloader";
 import MessageBox from "../../../components/MessageBox/MessageBox";
 import {
+  deliverOrderByIdStart,
   loadOrderByIdStart,
   payOrderByIdStart,
 } from "../../../store/actions/orderActions";
@@ -15,7 +16,7 @@ const Order = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const { orderId } = params;
-  const { isSignedIn = false } = useSelector((state) => state.auth);
+  const { user, isSignedIn = false } = useSelector((state) => state.auth);
   const { cart } = useSelector((state) => state.cart);
   const { loader, order } = useSelector((state) => state.order);
 
@@ -38,6 +39,11 @@ const Order = () => {
   const payOrderHandler = (e) => {
     e.preventDefault();
     dispatch(payOrderByIdStart(orderId));
+  };
+
+  const deliverOrderHandler = (e) => {
+    e.preventDefault();
+    dispatch(deliverOrderByIdStart(orderId));
   };
 
   // Show lodder
@@ -168,6 +174,21 @@ const Order = () => {
                           </div>
                         </ListGroup.Item>
                       )}
+                      {user.role === "Admin" &&
+                        order.isPaid &&
+                        !order.isDelivered && (
+                          <ListGroup.Item>
+                            <div className="d-grid">
+                              <Button
+                                type="button"
+                                onClick={(e) => deliverOrderHandler(e)}
+                                disabled={cart?.cartItems.length === 0}
+                              >
+                                Deliver Order
+                              </Button>
+                            </div>
+                          </ListGroup.Item>
+                        )}
                     </ListGroup>
                   </Card.Body>
                 </Card>
