@@ -1,11 +1,14 @@
 import React, { useEffect } from "react";
-import { Card, Col, Container, ListGroup, Row } from "react-bootstrap";
+import { Button, Card, Col, Container, ListGroup, Row } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Preloader from "../../../components/Preloader/Preloader";
 import MessageBox from "../../../components/MessageBox/MessageBox";
-import { loadOrderByIdStart } from "../../../store/actions/orderActions";
+import {
+  loadOrderByIdStart,
+  payOrderByIdStart,
+} from "../../../store/actions/orderActions";
 
 const Order = () => {
   const navigate = useNavigate();
@@ -31,6 +34,11 @@ const Order = () => {
     }
     dispatch(loadOrderByIdStart(orderId));
   }, [navigate, cart, isSignedIn]);
+
+  const payOrderHandler = (e) => {
+    e.preventDefault();
+    dispatch(payOrderByIdStart(orderId));
+  };
 
   // Show lodder
   if (loader) {
@@ -147,6 +155,19 @@ const Order = () => {
                           </Col>
                         </Row>
                       </ListGroup.Item>
+                      {!order.isPaid && (
+                        <ListGroup.Item>
+                          <div className="d-grid">
+                            <Button
+                              type="button"
+                              onClick={(e) => payOrderHandler(e)}
+                              disabled={cart?.cartItems.length === 0}
+                            >
+                              Pay Order
+                            </Button>
+                          </div>
+                        </ListGroup.Item>
+                      )}
                     </ListGroup>
                   </Card.Body>
                 </Card>
