@@ -8,12 +8,21 @@ import {
   UPDATE_CART_ERROR,
   UPDATE_CART_START,
   UPDATE_CART_SUCCESS,
+  ADD_SHIPPING_ADDRESS_ERROR,
+  ADD_SHIPPING_ADDRESS_START,
+  ADD_SHIPPING_ADDRESS_SUCCESS,
+  ADD_PAYMENT_METHOD_START,
+  ADD_PAYMENT_METHOD_SUCCESS,
+  ADD_PAYMENT_METHOD_ERROR,
 } from "../action-types/cartActionTypes";
+
 import CartlocalStorage from "../localStorage/cart.localStorage";
 
 const initialState = {
   cart: {
     cartItems: CartlocalStorage.getCartItems() ?? [],
+    shippingAddress: CartlocalStorage.getShippingAddress() ?? {},
+    paymentMethod: CartlocalStorage.getPaymentMethod() ?? "",
   },
   error: "",
   loader: false,
@@ -24,6 +33,8 @@ const cartReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_CART_START:
     case UPDATE_CART_START:
+    case ADD_SHIPPING_ADDRESS_START:
+    case ADD_PAYMENT_METHOD_START:
       return { ...state, payload: action.payload, loader: true };
     case DELETE_CART_START:
       return { ...state, slug: action.payload, loader: true };
@@ -46,10 +57,37 @@ const cartReducer = (state = initialState, action) => {
         (item) => item._id !== action.payload._id
       );
       CartlocalStorage.saveCartItem(items);
-      return { ...state, cart: { ...state.cart, cartItems: items } };
+      return {
+        ...state,
+        cart: { ...state.cart, cartItems: items },
+        success: true,
+        loader: false,
+      };
+    case ADD_SHIPPING_ADDRESS_SUCCESS:
+      return {
+        ...state,
+        cart: {
+          ...state.cart,
+          shippingAddress: action.payload,
+        },
+        success: true,
+        loader: false,
+      };
+    case ADD_PAYMENT_METHOD_SUCCESS:
+      return {
+        ...state,
+        cart: {
+          ...state.cart,
+          paymentMethod: action.payload,
+        },
+        success: true,
+        loader: false,
+      };
     case ADD_CART_ERROR:
     case UPDATE_CART_ERROR:
     case DELETE_CART_ERROR:
+    case ADD_SHIPPING_ADDRESS_ERROR:
+    case ADD_PAYMENT_METHOD_ERROR:
       return {
         ...state,
         error: action.payload,

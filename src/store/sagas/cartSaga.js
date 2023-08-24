@@ -6,14 +6,22 @@ import {
   deleteCartSucess,
   updateCartError,
   updateCartSucess,
+  addShippingAddressError,
+  addShippingAddressSucess,
+  addPaymentMethodSucess,
+  addPaymentMethodError,
 } from "../actions/cartActions";
 import {
   ADD_CART_START,
   DELETE_CART_START,
   UPDATE_CART_START,
+  ADD_SHIPPING_ADDRESS_START,
+  ADD_PAYMENT_METHOD_START,
 } from "../action-types/cartActionTypes";
+
 import ProductService from "../services/product.service";
 import { toast } from "react-toastify";
+import CartlocalStorage from "../localStorage/cart.localStorage";
 
 function* onAddToCartsStartAsync({ payload }) {
   try {
@@ -77,6 +85,26 @@ function* updateCartStartAsync({ payload }) {
   }
 }
 
+function* onAddShippingAddressStartAsync({ payload }) {
+  try {
+    console.log("Call_Saga_Add_ShippingAddress_Payload", payload);
+    CartlocalStorage.saveShippingAddress(payload);
+    yield put(addShippingAddressSucess(payload));
+  } catch (error) {
+    yield put(addShippingAddressError(error.response));
+  }
+}
+
+function* onAddPaymentMethodStartAsync({ payload }) {
+  try {
+    console.log("Call_Saga_Add_PaymentMethod_Payload", payload);
+    CartlocalStorage.savePaymentMethod(payload.paymentMethod);
+    yield put(addPaymentMethodSucess(payload.paymentMethod));
+  } catch (error) {
+    yield put(addPaymentMethodError(error.response));
+  }
+}
+
 export function* onAddToCarts() {
   yield takeLatest(ADD_CART_START, onAddToCartsStartAsync);
 }
@@ -89,7 +117,21 @@ export function* updateCart() {
   yield takeLatest(UPDATE_CART_START, updateCartStartAsync);
 }
 
-const cartSagas = [fork(onAddToCarts), fork(deleteCart), fork(updateCart)];
+export function* onAddShippingAddress() {
+  yield takeLatest(ADD_SHIPPING_ADDRESS_START, onAddShippingAddressStartAsync);
+}
+
+export function* onAddPaymentMethod() {
+  yield takeLatest(ADD_PAYMENT_METHOD_START, onAddPaymentMethodStartAsync);
+}
+
+const cartSagas = [
+  fork(onAddToCarts),
+  fork(deleteCart),
+  fork(updateCart),
+  fork(onAddShippingAddress),
+  fork(onAddPaymentMethod),
+];
 
 export default function* cartSaga() {
   yield all([...cartSagas]);
