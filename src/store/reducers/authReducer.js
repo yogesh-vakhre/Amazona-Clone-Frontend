@@ -2,6 +2,9 @@ import {
   FORGET_PASSWORD_ERROR,
   FORGET_PASSWORD_START,
   FORGET_PASSWORD_SUCCESS,
+  RESET_PASSWORD_ERROR,
+  RESET_PASSWORD_START,
+  RESET_PASSWORD_SUCCESS,
   SIGN_IN_ERROR,
   SIGN_IN_START,
   SIGN_IN_SUCCESS,
@@ -31,12 +34,14 @@ const authReducer = (state = initialState, action) => {
     case SIGN_UP_START:
     case UPDATE_PROFILE_START:
     case FORGET_PASSWORD_START:
+    case RESET_PASSWORD_START:
       return { ...state, user: action.payload, loader: true };
     case SIGN_OUT_START:
       return { ...state, loader: true };
     case SIGN_IN_SUCCESS:
     case SIGN_UP_SUCCESS:
     case UPDATE_PROFILE_SUCCESS:
+    case RESET_PASSWORD_SUCCESS:
       return {
         ...state,
         user: action.payload.user,
@@ -65,6 +70,7 @@ const authReducer = (state = initialState, action) => {
     case SIGN_UP_ERROR:
     case UPDATE_PROFILE_ERROR:
     case FORGET_PASSWORD_ERROR:
+    case RESET_PASSWORD_ERROR:
     case SIGN_OUT_ERROR:
       return {
         ...state,
