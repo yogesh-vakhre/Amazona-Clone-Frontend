@@ -1,4 +1,7 @@
 import {
+  FORGET_PASSWORD_ERROR,
+  FORGET_PASSWORD_START,
+  FORGET_PASSWORD_SUCCESS,
   SIGN_IN_ERROR,
   SIGN_IN_START,
   SIGN_IN_SUCCESS,
@@ -69,5 +72,20 @@ export const signOutSucess = (data) => ({
 
 export const signOutError = (error) => ({
   type: SIGN_OUT_ERROR,
+  payload: error,
+});
+
+export const forgetPasswordStart = (user) => ({
+  type: FORGET_PASSWORD_START,
+  payload: user,
+});
+
+export const forgetPasswordSucess = (data) => ({
+  type: FORGET_PASSWORD_SUCCESS,
+  payload: data,
+});
+
+export const forgetPasswordError = (error) => ({
+  type: FORGET_PASSWORD_ERROR,
   payload: error,
 });

@@ -13,6 +13,7 @@ import PaymentMethod from "../views/pages/PaymentMethod/PaymentMethod";
 import PlaceOrder from "../views/pages/PlaceOrder/PlaceOrder";
 import Order from "../views/pages/Order/Order";
 import OrderHistory from "../views/pages/OrderHistory/OrderHistory";
+import ForgetPassword from "../views/pages/Auth/ForgetPassword/ForgetPassword";
 
 const Router = () => {
   return useRoutes([
@@ -59,6 +60,10 @@ const Router = () => {
         {
           path: "/orderhistory",
           element: <OrderHistory />,
+        },
+        {
+          path: "/forget-password",
+          element: <ForgetPassword />,
         },
         {
           path: "/product/:slug",
