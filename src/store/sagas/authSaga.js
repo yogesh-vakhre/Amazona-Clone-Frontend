@@ -1,11 +1,14 @@
 import { takeLatest, put, all, fork, call } from "redux-saga/effects";
 import {
+  FORGET_PASSWORD_START,
   SIGN_IN_START,
   SIGN_OUT_START,
   SIGN_UP_START,
   UPDATE_PROFILE_START,
 } from "../action-types/authActionTypes";
 import {
+  forgetPasswordError,
+  forgetPasswordSucess,
   signInError,
   signInSucess,
   signOutError,
@@ -95,6 +98,21 @@ function* onSignOutStartAsync({ payload }) {
   }
 }
 
+function* onforgetPasswordStartAsync({ payload }) {
+  try {
+    console.log("Call_Saga_Get_Forget_Password_Start_Payload", payload);
+    const response = yield call(AuthService.forgetPassword, payload);
+    console.log("Call_Saga_Get_Forget_Password_Start", response.data);
+
+    if (response?.status === "success") {
+      yield put(forgetPasswordSucess(response));
+      toast.success(response.message);
+    }
+  } catch (error) {
+    yield put(forgetPasswordError(error.response));
+  }
+}
+
 export function* onSignInStart() {
   yield takeLatest(SIGN_IN_START, onSignInStartAsync);
 }
@@ -111,11 +129,16 @@ export function* onSignOutStart() {
   yield takeLatest(SIGN_OUT_START, onSignOutStartAsync);
 }
 
+export function* onforgetPasswordStart() {
+  yield takeLatest(FORGET_PASSWORD_START, onforgetPasswordStartAsync);
+}
+
 const authSagas = [
   fork(onSignInStart),
   fork(onSignUpStart),
   fork(onUpdateProfileStart),
   fork(onSignOutStart),
+  fork(onforgetPasswordStart),
 ];
 
 export default function* authSaga() {
