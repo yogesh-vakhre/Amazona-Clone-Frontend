@@ -14,6 +14,7 @@ import PlaceOrder from "../views/pages/PlaceOrder/PlaceOrder";
 import Order from "../views/pages/Order/Order";
 import OrderHistory from "../views/pages/OrderHistory/OrderHistory";
 import ForgetPassword from "../views/pages/Auth/ForgetPassword/ForgetPassword";
+import ResetPassword from "../views/pages/Auth/ResetPassword/ResetPassword";
 
 const Router = () => {
   return useRoutes([
@@ -64,6 +65,10 @@ const Router = () => {
         {
           path: "/forget-password",
           element: <ForgetPassword />,
+        },
+        {
+          path: "/reset-password",
+          element: <ResetPassword />,
         },
         {
           path: "/product/:slug",

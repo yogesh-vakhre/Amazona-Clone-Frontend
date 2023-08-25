@@ -2,6 +2,9 @@ import {
   FORGET_PASSWORD_ERROR,
   FORGET_PASSWORD_START,
   FORGET_PASSWORD_SUCCESS,
+  RESET_PASSWORD_ERROR,
+  RESET_PASSWORD_START,
+  RESET_PASSWORD_SUCCESS,
   SIGN_IN_ERROR,
   SIGN_IN_START,
   SIGN_IN_SUCCESS,
@@ -87,5 +90,20 @@ export const forgetPasswordSucess = (data) => ({
 
 export const forgetPasswordError = (error) => ({
   type: FORGET_PASSWORD_ERROR,
+  payload: error,
+});
+
+export const resetPasswordStart = (user) => ({
+  type: RESET_PASSWORD_START,
+  payload: user,
+});
+
+export const resetPasswordSucess = (data) => ({
+  type: RESET_PASSWORD_SUCCESS,
+  payload: data,
+});
+
+export const resetPasswordError = (error) => ({
+  type: RESET_PASSWORD_ERROR,
   payload: error,
 });

@@ -1,6 +1,7 @@
 import { takeLatest, put, all, fork, call } from "redux-saga/effects";
 import {
   FORGET_PASSWORD_START,
+  RESET_PASSWORD_START,
   SIGN_IN_START,
   SIGN_OUT_START,
   SIGN_UP_START,
@@ -9,6 +10,8 @@ import {
 import {
   forgetPasswordError,
   forgetPasswordSucess,
+  resetPasswordError,
+  resetPasswordSucess,
   signInError,
   signInSucess,
   signOutError,
@@ -98,7 +101,7 @@ function* onSignOutStartAsync({ payload }) {
   }
 }
 
-function* onforgetPasswordStartAsync({ payload }) {
+function* onForgetPasswordStartAsync({ payload }) {
   try {
     console.log("Call_Saga_Get_Forget_Password_Start_Payload", payload);
     const response = yield call(AuthService.forgetPassword, payload);
@@ -110,6 +113,22 @@ function* onforgetPasswordStartAsync({ payload }) {
     }
   } catch (error) {
     yield put(forgetPasswordError(error.response));
+  }
+}
+
+function* onResetPasswordStartAsync({ payload }) {
+  try {
+    console.log("Call_Saga_Get_Reset_Password_Start_Payload", payload);
+    const response = yield call(AuthService.resetPassword, payload);
+    console.log("Call_Saga_Get_Reset_Password_Start", response.data);
+
+    if (response?.status === "success") {
+      yield put(resetPasswordSucess(response));
+
+      toast.success("Password updated successfully");
+    }
+  } catch (error) {
+    yield put(resetPasswordError(error.response));
   }
 }
 
@@ -129,8 +148,12 @@ export function* onSignOutStart() {
   yield takeLatest(SIGN_OUT_START, onSignOutStartAsync);
 }
 
-export function* onforgetPasswordStart() {
-  yield takeLatest(FORGET_PASSWORD_START, onforgetPasswordStartAsync);
+export function* onForgetPasswordStart() {
+  yield takeLatest(FORGET_PASSWORD_START, onForgetPasswordStartAsync);
+}
+
+export function* onResetPasswordStart() {
+  yield takeLatest(RESET_PASSWORD_START, onResetPasswordStartAsync);
 }
 
 const authSagas = [
@@ -138,7 +161,8 @@ const authSagas = [
   fork(onSignUpStart),
   fork(onUpdateProfileStart),
   fork(onSignOutStart),
-  fork(onforgetPasswordStart),
+  fork(onForgetPasswordStart),
+  fork(onResetPasswordStart),
 ];
 
 export default function* authSaga() {
