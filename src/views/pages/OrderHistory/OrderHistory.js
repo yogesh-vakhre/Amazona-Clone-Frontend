@@ -10,17 +10,11 @@ const OrderHistory = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { isSignedIn = false } = useSelector((state) => state.auth);
   const { loader, orders } = useSelector((state) => state.order);
 
   useEffect(() => {
-    // Check user login
-    if (!isSignedIn) {
-      navigate("/signin");
-    }
-
     dispatch(loadOrdersStart());
-  }, [navigate, isSignedIn]);
+  }, [navigate, dispatch]);
 
   // Show lodder
   if (loader) {

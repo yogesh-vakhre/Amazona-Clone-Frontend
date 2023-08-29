@@ -1,7 +1,13 @@
 import {
+  EMAIL_VERIFICATION_ERROR,
+  EMAIL_VERIFICATION_START,
+  EMAIL_VERIFICATION_SUCCESS,
   FORGET_PASSWORD_ERROR,
   FORGET_PASSWORD_START,
   FORGET_PASSWORD_SUCCESS,
+  LOAD_PROFILE_ERROR,
+  LOAD_PROFILE_START,
+  LOAD_PROFILE_SUCCESS,
   RESET_PASSWORD_ERROR,
   RESET_PASSWORD_START,
   RESET_PASSWORD_SUCCESS,
@@ -105,5 +111,35 @@ export const resetPasswordSucess = (data) => ({
 
 export const resetPasswordError = (error) => ({
   type: RESET_PASSWORD_ERROR,
+  payload: error,
+});
+
+export const emailVerificationStart = (user) => ({
+  type: EMAIL_VERIFICATION_START,
+  payload: user,
+});
+
+export const emailVerificationSucess = (data) => ({
+  type: EMAIL_VERIFICATION_SUCCESS,
+  payload: data,
+});
+
+export const emailVerificationError = (error) => ({
+  type: EMAIL_VERIFICATION_ERROR,
+  payload: error,
+});
+
+export const loadProfileStart = (user) => ({
+  type: LOAD_PROFILE_START,
+  payload: user,
+});
+
+export const loadProfileSucess = (data) => ({
+  type: LOAD_PROFILE_SUCCESS,
+  payload: data,
+});
+
+export const loadProfileError = (error) => ({
+  type: LOAD_PROFILE_ERROR,
   payload: error,
 });

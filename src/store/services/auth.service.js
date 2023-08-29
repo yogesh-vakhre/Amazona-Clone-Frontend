@@ -71,11 +71,23 @@ const resetPassword = async ({ token, data }) => {
   }
 };
 
+const emailVerification = async (token) => {
+  const response = await authInstance.get(`/email-verification/${token}`);
+  return response.data;
+};
+
+const getProfile = async () => {
+  const response = await authInstance.get(`/get-profile`);
+  return response.data;
+};
+
 const AuthService = {
   signIn,
   signUp,
   updateProfile,
   forgetPassword,
   resetPassword,
+  emailVerification,
+  getProfile,
 };
 export default AuthService;
