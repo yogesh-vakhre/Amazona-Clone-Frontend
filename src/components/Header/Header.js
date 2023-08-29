@@ -4,13 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { Link, Outlet } from "react-router-dom";
 import { signOutStart } from "../../store/actions/authActions";
+import SearchBar from "../SearchBar/SearchBar";
 //import PropTypes from 'prop-types'
 
 const Header = (props) => {
-  const {
-    cart: { cart },
-    auth: { isSignedIn, user },
-  } = useSelector((state) => state);
+  const cart = useSelector((state) => state.cart);
+  const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   // User sign out
@@ -27,18 +26,19 @@ const Header = (props) => {
             <LinkContainer to="/">
               <Navbar.Brand>Amazona</Navbar.Brand>
             </LinkContainer>
+            <SearchBar />
             <Nav className="me-auto w-100  justify-content-end">
               <Link to="/cart" className="nav-link">
                 Cart
-                {cart.cartItems.length > 0 && (
+                {cart?.cartItems?.length > 0 && (
                   <Badge pill bg="danger">
                     {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
                   </Badge>
                 )}
               </Link>
-              {isSignedIn ? (
+              {auth?.isSignedIn ? (
                 <NavDropdown
-                  title={user.firstName + " " + user.lastName}
+                  title={auth?.user?.firstName + " " + auth?.user?.lastName}
                   id="basic-nav-dropdown"
                 >
                   <LinkContainer to="/profile">
@@ -50,7 +50,7 @@ const Header = (props) => {
                   <NavDropdown.Divider />
                   <Link
                     className="dropdown-item"
-                    to="#signout"
+                    to="#"
                     onClick={(e) => signoutHandler(e)}
                   >
                     Sign Out

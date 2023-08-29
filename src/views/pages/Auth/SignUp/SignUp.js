@@ -76,7 +76,7 @@ const SignUp = () => {
                 <Form.Control
                   type="text"
                   {...register("firstName")}
-                  className={`${errors.firstName ? "is-invalid" : "is-valid"}`}
+                  className={`${errors.firstName ? "is-invalid" : ""}`}
                 />
                 {errors.firstName && (
                   <p className="text-danger">{errors.firstName?.message}</p>
@@ -87,7 +87,7 @@ const SignUp = () => {
                 <Form.Control
                   type="text"
                   {...register("lastName")}
-                  className={`${errors.lastName ? "is-invalid" : "is-valid"}`}
+                  className={`${errors.lastName ? "is-invalid" : ""}`}
                 />
                 {errors.lastName && (
                   <p className="text-danger">{errors.lastName?.message}</p>
@@ -123,9 +123,7 @@ const SignUp = () => {
                 <Form.Control
                   type="date"
                   {...register("dateOfBirth")}
-                  className={`${
-                    errors.dateOfBirth ? "is-invalid" : "is-valid"
-                  }`}
+                  className={`${errors.dateOfBirth ? "is-invalid" : ""}`}
                 />
                 {errors.dob && (
                   <p className="text-danger">{errors.dateOfBirth?.message}</p>
@@ -136,7 +134,7 @@ const SignUp = () => {
                 <Form.Control
                   type="number"
                   {...register("phoneNo")}
-                  className={`${errors.phoneNo ? "is-invalid" : "is-valid"}`}
+                  className={`${errors.phoneNo ? "is-invalid" : ""}`}
                 />
                 {errors.phoneNo && (
                   <p className="text-danger">{errors.phoneNo?.message}</p>
@@ -147,7 +145,7 @@ const SignUp = () => {
                 <FormControl
                   type="email"
                   {...register("email")}
-                  className={`${errors.email ? "is-invalid" : "is-valid"}`}
+                  className={`${errors.email ? "is-invalid" : ""}`}
                 />
                 {errors.email && (
                   <p className="text-danger">{errors.email?.message}</p>
@@ -158,7 +156,7 @@ const SignUp = () => {
                 <FormControl
                   type="password"
                   {...register("password")}
-                  className={`${errors.password ? "is-invalid" : "is-valid"}`}
+                  className={`${errors.password ? "is-invalid" : ""}`}
                 />
                 {errors.password && (
                   <p className="text-danger">{errors.password?.message}</p>
@@ -169,9 +167,7 @@ const SignUp = () => {
                 <Form.Control
                   type="password"
                   {...register("confirmPassword")}
-                  className={`${
-                    errors.confirmPassword ? "is-invalid" : "is-valid"
-                  }`}
+                  className={`${errors.confirmPassword ? "is-invalid" : ""}`}
                 />
                 {errors.confirmPassword && (
                   <p className="text-danger">

@@ -1,7 +1,13 @@
 import {
+  EMAIL_VERIFICATION_ERROR,
+  EMAIL_VERIFICATION_START,
+  EMAIL_VERIFICATION_SUCCESS,
   FORGET_PASSWORD_ERROR,
   FORGET_PASSWORD_START,
   FORGET_PASSWORD_SUCCESS,
+  LOAD_PROFILE_ERROR,
+  LOAD_PROFILE_START,
+  LOAD_PROFILE_SUCCESS,
   RESET_PASSWORD_ERROR,
   RESET_PASSWORD_START,
   RESET_PASSWORD_SUCCESS,
@@ -18,6 +24,7 @@ import {
   UPDATE_PROFILE_START,
   UPDATE_PROFILE_SUCCESS,
 } from "../action-types/authActionTypes";
+
 import { getUserInfo } from "../localStorage";
 
 const initialState = {
@@ -35,13 +42,15 @@ const authReducer = (state = initialState, action) => {
     case UPDATE_PROFILE_START:
     case FORGET_PASSWORD_START:
     case RESET_PASSWORD_START:
+    case EMAIL_VERIFICATION_START:
       return { ...state, user: action.payload, loader: true };
+    case LOAD_PROFILE_START:
     case SIGN_OUT_START:
       return { ...state, loader: true };
     case SIGN_IN_SUCCESS:
     case SIGN_UP_SUCCESS:
     case UPDATE_PROFILE_SUCCESS:
-    case RESET_PASSWORD_SUCCESS:
+    case LOAD_PROFILE_SUCCESS:
       return {
         ...state,
         user: action.payload.user,
@@ -49,6 +58,8 @@ const authReducer = (state = initialState, action) => {
         loader: false,
         success: true,
       };
+    case RESET_PASSWORD_SUCCESS:
+    case EMAIL_VERIFICATION_SUCCESS:
     case SIGN_OUT_SUCCESS:
       return {
         ...state,
@@ -72,6 +83,8 @@ const authReducer = (state = initialState, action) => {
     case FORGET_PASSWORD_ERROR:
     case RESET_PASSWORD_ERROR:
     case SIGN_OUT_ERROR:
+    case EMAIL_VERIFICATION_ERROR:
+    case LOAD_PROFILE_ERROR:
       return {
         ...state,
         error: action.payload,

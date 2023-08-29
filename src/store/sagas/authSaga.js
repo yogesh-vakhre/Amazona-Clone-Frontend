@@ -1,6 +1,15 @@
-import { takeLatest, put, all, fork, call } from "redux-saga/effects";
 import {
+  takeLatest,
+  put,
+  all,
+  fork,
+  call,
+  takeEvery,
+} from "redux-saga/effects";
+import {
+  EMAIL_VERIFICATION_START,
   FORGET_PASSWORD_START,
+  LOAD_PROFILE_START,
   RESET_PASSWORD_START,
   SIGN_IN_START,
   SIGN_OUT_START,
@@ -8,8 +17,12 @@ import {
   UPDATE_PROFILE_START,
 } from "../action-types/authActionTypes";
 import {
+  emailVerificationError,
+  emailVerificationSucess,
   forgetPasswordError,
   forgetPasswordSucess,
+  loadProfileError,
+  loadProfileSucess,
   resetPasswordError,
   resetPasswordSucess,
   signInError,
@@ -29,6 +42,7 @@ import {
   saveUserInfo,
 } from "../localStorage";
 import { toast } from "react-toastify";
+import { getError } from "../../utils/getError";
 
 function* onSignInStartAsync({ payload }) {
   try {
@@ -95,7 +109,6 @@ function* onSignOutStartAsync({ payload }) {
     deleteToken();
     deleteUserInfo();
     yield put(signOutSucess());
-    toast.success("You have successfully signed out!");
   } catch (error) {
     yield put(signOutError(error.response));
   }
@@ -132,6 +145,36 @@ function* onResetPasswordStartAsync({ payload }) {
   }
 }
 
+function* onEmailVerificationStartAsync({ payload }) {
+  try {
+    console.log("Call_Saga_Get_Email_Verification_Start_Payload", payload);
+    const response = yield call(AuthService.emailVerification, payload);
+    console.log("Call_Saga_Get_Email_Verification_Start", response);
+    if (response?.status === "success") {
+      const { user, token } = response;
+
+      saveToken(token);
+      saveUserInfo(user);
+      yield put(emailVerificationSucess(response));
+    }
+  } catch (error) {
+    yield put(emailVerificationError(getError(error)));
+  }
+}
+
+function* onLoadProfileStartAsync({ payload }) {
+  try {
+    const response = yield call(AuthService.getProfile);
+    console.log("Call_Saga_Get_Load_Profile_Start", response);
+    if (response?.status === "success") {
+      saveUserInfo(response.user);
+      yield put(loadProfileSucess(response));
+    }
+  } catch (error) {
+    yield put(loadProfileError(error.response));
+  }
+}
+
 export function* onSignInStart() {
   yield takeLatest(SIGN_IN_START, onSignInStartAsync);
 }
@@ -156,6 +199,14 @@ export function* onResetPasswordStart() {
   yield takeLatest(RESET_PASSWORD_START, onResetPasswordStartAsync);
 }
 
+export function* onEmailVerificationStart() {
+  yield takeEvery(EMAIL_VERIFICATION_START, onEmailVerificationStartAsync);
+}
+
+export function* onLoadProfileStart() {
+  yield takeLatest(LOAD_PROFILE_START, onLoadProfileStartAsync);
+}
+
 const authSagas = [
   fork(onSignInStart),
   fork(onSignUpStart),
@@ -163,6 +214,8 @@ const authSagas = [
   fork(onSignOutStart),
   fork(onForgetPasswordStart),
   fork(onResetPasswordStart),
+  fork(onEmailVerificationStart),
+  fork(onLoadProfileStart),
 ];
 
 export default function* authSaga() {
