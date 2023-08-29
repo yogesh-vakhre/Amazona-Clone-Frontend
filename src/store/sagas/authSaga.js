@@ -41,6 +41,7 @@ import {
   saveToken,
   saveUserInfo,
 } from "../localStorage";
+import cartLocalStorage from "../localStorage/cart.localStorage";
 import { toast } from "react-toastify";
 import { getError } from "../../utils/getError";
 
@@ -108,6 +109,9 @@ function* onSignOutStartAsync({ payload }) {
     console.log("Call_Saga_Get_Sign_Out_Start");
     deleteToken();
     deleteUserInfo();
+    cartLocalStorage.deleteCartItems();
+    cartLocalStorage.deleteShippingAddress();
+    cartLocalStorage.deletePaymentMethod();
     yield put(signOutSucess());
   } catch (error) {
     yield put(signOutError(error.response));
