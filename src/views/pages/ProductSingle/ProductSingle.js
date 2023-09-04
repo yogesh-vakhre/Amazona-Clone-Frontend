@@ -24,7 +24,7 @@ const ProductSingle = (props) => {
   const dispatch = useDispatch();
   const { slug } = useParams();
   useEffect(() => {
-    dispatch(loadProductBySlugRequest(slug));
+    return () => dispatch(loadProductBySlugRequest(slug));
   }, [slug]);
 
   // Show lodder

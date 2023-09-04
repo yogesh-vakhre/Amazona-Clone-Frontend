@@ -47,12 +47,12 @@ import { getError } from "../../utils/getError";
 
 function* onSignInStartAsync({ payload }) {
   try {
-    console.log("Call_Saga_Get_Sign_In_Start_Payload", payload);
+    console.log("Call_Saga_Get_Sign_In_Payload", payload);
     const response = yield call(AuthService.signIn, payload);
-    console.log("Call_Saga_Get_Sign_In_Start", response.data);
+    console.log("Call_Saga_Get_Sign_In_Response", response.data);
 
-    if (response?.status === "success") {
-      const { user, token } = response;
+    if (response?.data?.status === "success") {
+      const { user, token } = response.data;
       if (user?.status !== "Blocked" && user?.status !== "Suspended") {
         saveToken(token);
         saveUserInfo(user);
@@ -61,52 +61,54 @@ function* onSignInStartAsync({ payload }) {
       yield put(signInSucess(response));
     }
   } catch (error) {
-    yield put(signInError(error.response));
+    yield put(signInError(getError(error)));
+    toast.error(getError(error));
   }
 }
 
 function* onSignUpStartAsync({ payload }) {
   try {
-    console.log("Call_Saga_Get_Sign_Up_Start_Payload", payload);
+    console.log("Call_Saga_Get_Sign_Up_Payload", payload);
     const response = yield call(AuthService.signUp, payload);
-    console.log("Call_Saga_Get_Sign_Up_Start", response.data);
+    console.log("Call_Saga_Get_Sign_Up_Response", response.data);
 
-    if (response?.status === "success") {
-      const { user, token } = response;
+    if (response?.data?.status === "success") {
+      const { user, token } = response.data;
       if (user?.status !== "Blocked" && user?.status !== "Suspended") {
         saveToken(token);
         saveUserInfo(user);
-        yield put(signUpSucess(response));
+        yield put(signUpSucess(response.data));
       }
-      yield put(signUpSucess(response));
+      yield put(signUpSucess(response.data));
     }
   } catch (error) {
-    yield put(signUpError(error.response));
+    yield put(signUpError(getError(error)));
+    toast.error(getError(error));
   }
 }
 
 function* onUpdateProfileStartAsync({ payload }) {
   try {
-    console.log("Call_Saga_Get_Update_Profile_Start_Payload", payload);
+    console.log("Call_Saga_Get_Update_Profile_Payload", payload);
     const response = yield call(AuthService.updateProfile, payload);
-    console.log("Call_Saga_Get_Update_Profile_Start", response);
-    if (response?.status === "success") {
-      const { user } = response;
+    console.log("Call_Saga_Get_Update_Profile_Response", response);
+    if (response?.data?.status === "success") {
+      const { user } = response.data;
       saveUserInfo(user);
       yield put(updateProfileSucess(response));
       toast.success(response.message);
     } else {
       yield put(updateProfileError("Something Went Wrong, Please Try Again!"));
-      toast.error("Something Went Wrong, Please Try Again!");
     }
   } catch (error) {
-    yield put(updateProfileError(error.response));
+    yield put(updateProfileError(getError(error)));
+    toast.error(getError(error));
   }
 }
 
-function* onSignOutStartAsync({ payload }) {
+function* onSignOutStartAsync() {
   try {
-    console.log("Call_Saga_Get_Sign_Out_Start");
+    console.log("Call_Saga_Get_Sign_Out");
     deleteToken();
     deleteUserInfo();
     cartLocalStorage.deleteCartItems();
@@ -114,68 +116,72 @@ function* onSignOutStartAsync({ payload }) {
     cartLocalStorage.deletePaymentMethod();
     yield put(signOutSucess());
   } catch (error) {
-    yield put(signOutError(error.response));
+    yield put(signOutError(getError(error)));
+    toast.error(getError(error));
   }
 }
 
 function* onForgetPasswordStartAsync({ payload }) {
   try {
-    console.log("Call_Saga_Get_Forget_Password_Start_Payload", payload);
+    console.log("Call_Saga_Get_Forget_Password_Payload", payload);
     const response = yield call(AuthService.forgetPassword, payload);
-    console.log("Call_Saga_Get_Forget_Password_Start", response.data);
+    console.log("Call_Saga_Get_Forget_Password_Response", response.data);
 
-    if (response?.status === "success") {
-      yield put(forgetPasswordSucess(response));
-      toast.success(response.message);
+    if (response?.data?.status === "success") {
+      yield put(forgetPasswordSucess(response.data));
+      toast.success(response.data.message);
     }
   } catch (error) {
-    yield put(forgetPasswordError(error.response));
+    yield put(forgetPasswordError(getError(error)));
+    toast.error(getError(error));
   }
 }
 
 function* onResetPasswordStartAsync({ payload }) {
   try {
-    console.log("Call_Saga_Get_Reset_Password_Start_Payload", payload);
+    console.log("Call_Saga_Get_Reset_Password_Payload", payload);
     const response = yield call(AuthService.resetPassword, payload);
-    console.log("Call_Saga_Get_Reset_Password_Start", response.data);
+    console.log("Call_Saga_Get_Reset_Password_Response", response.data);
 
-    if (response?.status === "success") {
-      yield put(resetPasswordSucess(response));
-
+    if (response?.data?.status === "success") {
+      yield put(resetPasswordSucess(response.data));
       toast.success("Password updated successfully");
     }
   } catch (error) {
-    yield put(resetPasswordError(error.response));
+    yield put(resetPasswordError(getError(error)));
+    toast.error(getError(error));
   }
 }
 
 function* onEmailVerificationStartAsync({ payload }) {
   try {
-    console.log("Call_Saga_Get_Email_Verification_Start_Payload", payload);
+    console.log("Call_Saga_Get_Email_Verification_Payload", payload);
     const response = yield call(AuthService.emailVerification, payload);
-    console.log("Call_Saga_Get_Email_Verification_Start", response);
-    if (response?.status === "success") {
-      const { user, token } = response;
+    console.log("Call_Saga_Get_Email_Verification_Response", response);
+    if (response?.data?.status === "success") {
+      const { user, token } = response.data;
 
       saveToken(token);
       saveUserInfo(user);
-      yield put(emailVerificationSucess(response));
+      yield put(emailVerificationSucess(response.data));
     }
   } catch (error) {
     yield put(emailVerificationError(getError(error)));
+    // toast.error(getError(error));
   }
 }
 
-function* onLoadProfileStartAsync({ payload }) {
+function* onLoadProfileStartAsync() {
   try {
     const response = yield call(AuthService.getProfile);
-    console.log("Call_Saga_Get_Load_Profile_Start", response);
-    if (response?.status === "success") {
-      saveUserInfo(response.user);
-      yield put(loadProfileSucess(response));
+    console.log("Call_Saga_Get_Load_Profile_Response", response);
+    if (response?.data?.status === "success") {
+      saveUserInfo(response?.data?.user);
+      yield put(loadProfileSucess(response.data));
     }
   } catch (error) {
-    yield put(loadProfileError(error.response));
+    yield put(loadProfileError(getError(error)));
+    toast.error(getError(error));
   }
 }
 

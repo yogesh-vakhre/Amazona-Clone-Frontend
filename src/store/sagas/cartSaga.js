@@ -22,16 +22,17 @@ import {
 import ProductService from "../services/product.service";
 import { toast } from "react-toastify";
 import CartlocalStorage from "../localStorage/cart.localStorage";
+import { getError } from "../../utils/getError";
 
 function* onAddToCartsStartAsync({ payload }) {
   try {
     console.log("Call_Saga_Add_To_Cart", payload);
     const { slug, cart } = payload;
 
-    const response = yield call(ProductService.getBySlug, slug);
-    console.log("Call_Saga_Get_ProductBySlug", response.product);
-    if (response.status === "success") {
-      const product = response.product;
+    const response = yield call(ProductService.getProductBySlug, slug);
+    console.log("Call_Saga_Get_ProductBySlug", response.data.product);
+    if (response?.data?.status === "success") {
+      const product = response?.data?.product;
       const existItem = cart.cartItems.find((x) => x._id === product._id);
       const quantity = existItem ? existItem.quantity + 1 : 1;
 
@@ -47,7 +48,8 @@ function* onAddToCartsStartAsync({ payload }) {
       toast.error("Something Went Wrong, Please Try Again!");
     }
   } catch (error) {
-    yield put(addToCartError(error.response));
+    yield put(addToCartError(getError(error)));
+    toast.error(getError(error));
   }
 }
 
@@ -56,7 +58,8 @@ function* deleteCartStartAsync({ payload }) {
     console.log("Call_Saga_delete_Cart_Start", payload);
     yield put(deleteCartSucess(payload));
   } catch (error) {
-    yield put(deleteCartError(error.response));
+    yield put(deleteCartError(getError(error)));
+    toast.error(getError(error));
   }
 }
 
@@ -66,9 +69,9 @@ function* updateCartStartAsync({ payload }) {
 
     const { product, quantity } = payload;
 
-    const response = yield call(ProductService.getBySlug, product.slug);
-    console.log("Call_Saga_Get_ProductBySlug", response.product);
-    if (response.status === "success") {
+    const response = yield call(ProductService.getProductBySlug, product.slug);
+    console.log("Call_Saga_Get_ProductBySlug", response.data.product);
+    if (response?.data?.status === "success") {
       //Check if product out of stock
       if (product.countInStock < quantity || product.countInStock === 0) {
         yield put(updateCartError("Sorry. Product is out of stock!"));
@@ -81,7 +84,8 @@ function* updateCartStartAsync({ payload }) {
       toast.error("Something Went Wrong, Please Try Again!");
     }
   } catch (error) {
-    yield put(updateCartError(error.response));
+    yield put(updateCartError(getError(error)));
+    toast.error(getError(error));
   }
 }
 
@@ -91,7 +95,8 @@ function* onAddShippingAddressStartAsync({ payload }) {
     CartlocalStorage.saveShippingAddress(payload);
     yield put(addShippingAddressSucess(payload));
   } catch (error) {
-    yield put(addShippingAddressError(error.response));
+    yield put(addShippingAddressError(getError(error)));
+    toast.error(getError(error));
   }
 }
 
@@ -101,7 +106,8 @@ function* onAddPaymentMethodStartAsync({ payload }) {
     CartlocalStorage.savePaymentMethod(payload.paymentMethod);
     yield put(addPaymentMethodSucess(payload.paymentMethod));
   } catch (error) {
-    yield put(addPaymentMethodError(error.response));
+    yield put(addPaymentMethodError(getError(error)));
+    toast.error(getError(error));
   }
 }
 
