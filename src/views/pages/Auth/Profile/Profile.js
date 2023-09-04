@@ -14,9 +14,14 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { updateProfileStart } from "../../../../store/actions/authActions";
+import Preloader from "../../../../components/Preloader/Preloader";
 
 const Profile = () => {
-  const { isSignedIn = false, user } = useSelector((state) => state.auth);
+  const {
+    isSignedIn = false,
+    user,
+    loader,
+  } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -37,14 +42,11 @@ const Profile = () => {
   const onSubmit = async (data) => {
     dispatch(updateProfileStart(data));
   };
-
-  useEffect(() => {
-    // Check user login
-    if (!isSignedIn) {
-      navigate("signin");
-    }
-  }, [navigate, isSignedIn]);
-
+  // Show lodder
+  if (loader) {
+    return <Preloader />;
+  }
+  console.log(user);
   return (
     <>
       <main>
@@ -61,7 +63,7 @@ const Profile = () => {
                   type="text"
                   {...register("firstName")}
                   className={`${errors.firstName ? "is-invalid" : ""}`}
-                  defaultValue={user.firstName}
+                  defaultValue={user?.firstName}
                 />
                 {errors.firstName && (
                   <p className="text-danger">{errors.firstName?.message}</p>
@@ -73,7 +75,7 @@ const Profile = () => {
                   type="text"
                   {...register("lastName")}
                   className={`${errors.lastName ? "is-invalid" : ""}`}
-                  defaultValue={user.lastName}
+                  defaultValue={user?.lastName}
                 />
                 {errors.lastName && (
                   <p className="text-danger">{errors.lastName?.message}</p>
@@ -86,7 +88,7 @@ const Profile = () => {
                   type="number"
                   {...register("phoneNo")}
                   className={`${errors.phoneNo ? "is-invalid" : ""}`}
-                  defaultValue={user.phoneNo}
+                  defaultValue={user?.phoneNo}
                 />
                 {errors.phoneNo && (
                   <p className="text-danger">{errors.phoneNo?.message}</p>
@@ -94,7 +96,7 @@ const Profile = () => {
               </Form.Group>
               <FormGroup className="mb-3" controlId="email">
                 <FormLabel>Email</FormLabel>
-                <FormControl type="email" defaultValue={user.email} disabled />
+                <FormControl type="email" defaultValue={user?.email} disabled />
                 {errors.email && (
                   <p className="text-danger">{errors.email?.message}</p>
                 )}

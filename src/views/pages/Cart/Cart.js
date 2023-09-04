@@ -16,9 +16,7 @@ import CartItem from "../../../components/CartItem/CartItem";
 
 const Cart = () => {
   const navigate = useNavigate();
-  const {
-    cart: { cart },
-  } = useSelector((state) => state);
+  const { cart } = useSelector((state) => state.cart);
   const { isSignedIn = false } = useSelector((state) => state.auth);
 
   const checkoutHandler = () => {

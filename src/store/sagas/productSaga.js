@@ -10,34 +10,38 @@ import {
   LOAD_PRODUCT_BY_SLUG_REQUEST,
 } from "../action-types/productActionTypes";
 import ProductService from "../services/product.service";
+import { getError } from "../../utils/getError";
+import { toast } from "react-toastify";
 
 function* onLoadProductsRequestAsync() {
   try {
-    const response = yield call(ProductService.getAll);
+    const response = yield call(ProductService.getProducts);
     console.log("Call_Saga_Get_Product", response);
-    if (response.status === "success") {
-      yield put(loadProductsSucess(response));
+    if (response?.data?.status === "success") {
+      yield put(loadProductsSucess(response.data));
     } else {
       yield put(loadProductsFail("Something Went Wrong, Please Try Again!"));
     }
   } catch (error) {
-    yield put(loadProductsFail(error.response));
+    yield put(loadProductsFail(getError(error)));
+    toast.error(getError(error));
   }
 }
 
 function* onLoadProductBySlugRequestAsync({ payload }) {
   try {
-    const response = yield call(ProductService.getBySlug, payload);
+    const response = yield call(ProductService.getProductBySlug, payload);
     console.log("Call_Saga_Get_Product_BY_Slug", payload);
-    if (response.status === "success") {
-      yield put(loadProductBySlugSucess(response));
+    if (response?.data?.status === "success") {
+      yield put(loadProductBySlugSucess(response.data));
     } else {
       yield put(
         loadProductBySlugFail("Something Went Wrong, Please Try Again!")
       );
     }
   } catch (error) {
-    yield put(loadProductsFail(error.response));
+    yield put(loadProductsFail(getError(error)));
+    toast.error(getError(error));
   }
 }
 

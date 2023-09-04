@@ -15,7 +15,8 @@ const Home = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(loadProductsRequest());
+    // dispatch(loadProductsRequest());
+    return () => dispatch(loadProductsRequest());
   }, []);
 
   // Show lodder

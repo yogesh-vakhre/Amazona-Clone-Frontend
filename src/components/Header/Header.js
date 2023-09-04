@@ -8,7 +8,7 @@ import SearchBar from "../SearchBar/SearchBar";
 //import PropTypes from 'prop-types'
 
 const Header = (props) => {
-  const cart = useSelector((state) => state.cart);
+  const { cart } = useSelector((state) => state.cart);
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 

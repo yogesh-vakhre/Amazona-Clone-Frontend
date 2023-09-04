@@ -1,54 +1,21 @@
 import orderInstance from "../axios/orderInstance";
 
-const getOrders = async () => {
-  try {
-    const order = await orderInstance.get(`/mine`);
-    return order.data;
-  } catch (error) {
-    return console.error(error);
-  }
-};
+const getOrders = async () => await orderInstance.get(`/mine`);
 
-const create = async (data) => {
-  try {
-    const order = await orderInstance.post(`/`, data);
-    return order.data;
-  } catch (error) {
-    return console.error(error);
-  }
-};
+const createOrder = async (data) => await orderInstance.post(`/`, data);
 
-const findById = async (orderId) => {
-  try {
-    const order = await orderInstance.get(`/${orderId}`);
-    return order.data;
-  } catch (error) {
-    return console.error(error);
-  }
-};
+const findOrderById = async (orderId) => await orderInstance.get(`/${orderId}`);
 
-const payOrderById = async (orderId) => {
-  try {
-    const order = await orderInstance.put(`/${orderId}/pay`);
-    return order.data;
-  } catch (error) {
-    return console.error(error);
-  }
-};
+const payOrderById = async (orderId) =>
+  await orderInstance.put(`/${orderId}/pay`);
 
-const deliverOrderById = async (orderId) => {
-  try {
-    const order = await orderInstance.put(`/${orderId}/deliver`);
-    return order.data;
-  } catch (error) {
-    return console.error(error);
-  }
-};
+const deliverOrderById = async (orderId) =>
+  await orderInstance.put(`/${orderId}/deliver`);
 
 const OrderService = {
   getOrders,
-  create,
-  findById,
+  createOrder,
+  findOrderById,
   payOrderById,
   deliverOrderById,
 };

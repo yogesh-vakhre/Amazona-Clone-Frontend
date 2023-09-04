@@ -1,25 +1,12 @@
 import productInstance from "../axios/productInstance";
 
-const getAll = async () => {
-  try {
-    const products = await productInstance.get("/");
-    return products.data;
-  } catch (error) {
-    return console.error(error);
-  }
-};
+const getProducts = async () => await productInstance.get("/");
 
-const getBySlug = async (slug) => {
-  try {
-    const product = await productInstance.get(`/slug/${slug}`);
-    return product.data;
-  } catch (error) {
-    return console.error(error);
-  }
-};
+const getProductBySlug = async (slug) =>
+  await productInstance.get(`/slug/${slug}`);
 
 const ProductService = {
-  getAll,
-  getBySlug,
+  getProducts,
+  getProductBySlug,
 };
 export default ProductService;

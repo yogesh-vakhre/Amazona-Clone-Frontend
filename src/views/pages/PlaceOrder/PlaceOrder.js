@@ -15,7 +15,7 @@ const PlaceOrder = () => {
 
   const { isSignedIn = false } = useSelector((state) => state.auth);
   const { cart } = useSelector((state) => state.cart);
-  const { loader, order } = useSelector((state) => state.order);
+  const { loader, order, success } = useSelector((state) => state.order);
 
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100; // 123.2345 => 123.23
   cart.itemsPrice = round2(
@@ -45,9 +45,8 @@ const PlaceOrder = () => {
       taxPrice: cart.taxPrice,
       totalPrice: cart.totalPrice,
     };
-
-    dispatch(addOrderStart(data));
     dispatch(cartClear());
+    dispatch(addOrderStart(data));
     navigate(`/order/${order._id}`);
   };
   console.log(order);

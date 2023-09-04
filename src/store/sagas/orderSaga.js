@@ -21,93 +21,94 @@ import {
   LOAD_ORDER_BY_ID_START,
   PAY_ORDER_BY_ID_START,
 } from "../action-types/orderActionTypes";
+import { getError } from "../../utils/getError";
 
 function* onLoadOrdersStartAsync() {
   try {
     const response = yield call(OrderService.getOrders);
-    console.log("Call_Saga_Orders_Start_Response", response);
+    console.log("Call_Saga_Orders_Response", response);
 
-    if (response?.status === "success") {
-      yield put(loadOrdersSucess(response));
+    if (response?.data?.status === "success") {
+      yield put(loadOrdersSucess(response.data));
     } else {
       yield put(loadOrdersError("Something Went Wrong, Please Try Again!"));
-      toast.error("Something Went Wrong, Please Try Again!");
     }
   } catch (error) {
-    yield put(loadOrdersError(error.response));
+    yield put(loadOrdersError(getError(error)));
+    toast.error(getError(error));
   }
 }
 
 function* onAddOrderStartAsync({ payload }) {
   try {
-    console.log("Call_Saga_Add_Order_Start_Payload", payload);
-    const response = yield call(OrderService.create, payload);
-    console.log("Call_Saga_Add_Order_Start_Response", response);
+    console.log("Call_Saga_Add_Order_Payload", payload);
+    const response = yield call(OrderService.createOrder, payload);
+    console.log("Call_Saga_Add_Order_Response", response);
 
-    if (response?.status === "success") {
-      yield put(addOrderSucess(response));
+    if (response?.data?.status === "success") {
+      yield put(addOrderSucess(response.data));
       toast.success("Order is created successfully!");
     } else {
       yield put(addOrderError("Something Went Wrong, Please Try Again!"));
-      toast.error("Something Went Wrong, Please Try Again!");
     }
   } catch (error) {
-    yield put(addOrderError(error.response));
+    yield put(addOrderError(getError(error)));
+    toast.error(getError(error));
   }
 }
 
 function* onLoadOrderByIdStartAsync({ payload }) {
   try {
-    console.log("Call_Saga_Order_BY_ID_Start_Payload", payload);
-    const response = yield call(OrderService.findById, payload);
-    console.log("Call_Saga_Order_BY_ID_Start_Response", response);
+    console.log("Call_Saga_Order_BY_ID_Payload", payload);
+    const response = yield call(OrderService.findOrderById, payload);
+    console.log("Call_Saga_Order_BY_ID_Response", response);
 
-    if (response?.status === "success") {
-      yield put(loadOrderByIdSucess(response));
+    if (response?.data?.status === "success") {
+      yield put(loadOrderByIdSucess(response.data));
     } else {
       yield put(loadOrderByIdError("Something Went Wrong, Please Try Again!"));
-      toast.error("Something Went Wrong, Please Try Again!");
     }
   } catch (error) {
-    yield put(loadOrderByIdError(error.response));
+    yield put(loadOrderByIdError(getError(error)));
+    toast.error(getError(error));
   }
 }
 
 function* onPayOrderByIdStartAsync({ payload }) {
   try {
-    console.log("Call_Saga_Pay_Order_BY_ID_Start_Payload", payload);
+    console.log("Call_Saga_Pay_Order_BY_ID_Payload", payload);
     const response = yield call(OrderService.payOrderById, payload);
-    console.log("Call_Saga_Pay_Order_BY_ID_Start_Response", response);
+    console.log("Call_Saga_Pay_Order_BY_ID_Response", response);
 
-    if (response?.status === "success") {
-      yield put(payOrderByIdSucess(response));
+    if (response?.data?.status === "success") {
+      yield put(payOrderByIdSucess(response.data));
       toast.success("Order is paid");
     } else {
       yield put(payOrderByIdError("Something Went Wrong, Please Try Again!"));
-      toast.error("Something Went Wrong, Please Try Again!");
     }
   } catch (error) {
-    yield put(payOrderByIdError(error.response));
+    yield put(payOrderByIdError(getError(error)));
+    toast.error(getError(error));
   }
 }
 
 function* onDeliverOrderByIdStartAsync({ payload }) {
   try {
-    console.log("Call_Saga_Deliver_Order_BY_ID_Start_Payload", payload);
+    console.log("Call_Saga_Deliver_Order_BY_ID_Payload", payload);
     const response = yield call(OrderService.deliverOrderById, payload);
-    console.log("Call_Saga_Deliver_Order_BY_ID_Start_Response", response);
+    console.log("Call_Saga_Deliver_Order_BY_ID_Response", response);
 
-    if (response?.status === "success") {
-      yield put(deliverOrderByIdSucess(response));
+    if (response?.data?.status === "success") {
+      yield put(deliverOrderByIdSucess(response.data));
       toast.success("Order is delivered");
     } else {
       yield put(
         deliverOrderByIdError("Something Went Wrong, Please Try Again!")
       );
-      toast.error("Something Went Wrong, Please Try Again!");
     }
   } catch (error) {
-    yield put(deliverOrderByIdError(error.response));
+    yield put(deliverOrderByIdError(getError(error)));
+    toast.error(getError(error));
   }
 }
 
